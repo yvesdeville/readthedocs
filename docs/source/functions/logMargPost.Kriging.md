@@ -28,6 +28,11 @@ Get Log-Marginal Posterior of Kriging Model
 
 The logMargPost computed for fitted $\theta$.
 
+## Details
+
+$$ 
+p(\theta) = 
+$$
 
 
 ## Examples
