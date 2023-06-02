@@ -6,8 +6,8 @@ project = 'libKriging'
 copyright = 'Apache License'
 author = 'libKriging team'
 
-release = '0.7'
-version = '0.7.0'
+release = '0.8'
+version = '0.8.0'
 
 # -- General configuration
 
