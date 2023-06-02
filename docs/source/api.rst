@@ -42,6 +42,7 @@ Fit objective
    functions/logLikelihoodFun.Kriging.md
    functions/leaveOneOut.Kriging.md
    functions/leaveOneOutFun.Kriging.md
+   functions/leaveOneOutVec.Kriging.md
    functions/logMargPost.Kriging.md
    functions/logMargPostFun.Kriging.md
    functions/fit.NuggetKriging.md

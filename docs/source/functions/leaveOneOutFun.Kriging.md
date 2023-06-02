@@ -12,17 +12,17 @@ Compute the Leave-One-Out (LOO) Sum of Squares of Errors
 * Python
     ```python
     # k = Kriging(...)
-    k.logMargPostFun(theta, grad = FALSE)
+    k.leaveOneOutFun(theta, grad = FALSE)
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$logMargPostFun(theta, grad = FALSE)
+    k$leaveOneOutFun(theta, grad = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.logMargPostFun(theta, grad = FALSE)
+    k.leaveOneOutFun(theta, grad = FALSE)
     ```
 
 
