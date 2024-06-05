@@ -10,17 +10,17 @@ Vector $\boldsymbol{\theta}$ of Correlation Ranges
 * Python
     ```python
     # k = Kriging(...)
-    k.logMargPostFun(theta, grad = FALSE)
+    k.logMargPostFun(theta, return_grad = False)
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$logMargPostFun(theta, grad = FALSE)
+    k$logMargPostFun(theta, return_grad = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.logMargPostFun(theta, grad = FALSE)
+    k.logMargPostFun(theta, return_grad = false)
     ```
 
 
@@ -29,7 +29,7 @@ Vector $\boldsymbol{\theta}$ of Correlation Ranges
 Argument      |Description
 ------------- |----------------
 `theta`     |     Numeric vector of correlation range parameters at which the function is to be evaluated.
-`grad`     |     Logical. Should the function return the gradient (w.r.t `theta`)?
+`return_grad`     |     Logical. Should the function return the gradient (w.r.t `theta`)?
 
 
 ## Details 

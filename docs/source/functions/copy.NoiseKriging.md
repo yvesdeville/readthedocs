@@ -16,7 +16,7 @@ Duplicate a `NoiseKriging` Model
 * R
     ```r
     # k = NoiseKriging(...)
-    k2 = k$copy()
+    k2 = k$copy() # or copy(k)
     ```
 * Matlab/Octave
     ```octave

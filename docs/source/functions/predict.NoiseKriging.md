@@ -11,17 +11,17 @@ Predict from a `NoiseKriging` Model Object
 * Python
     ```python
     # k = NoiseKriging(...)
-    k.predict(x, stdev = True, cov = False, deriv = False)
+    k.predict(x, return_stdev = True, return_cov = False, return_deriv = False)
     ```
 * R
     ```r
     # k = NoiseKriging(...)
-    k$predict(x, stdev = TRUE, cov = FALSE, deriv = FALSE)
+    k$predict(x, return_stdev = TRUE, return_cov = FALSE, return_deriv = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = NoiseKriging(...)
-    k.predict(x, stdev = true, cov = false, deriv = false)
+    k.predict(x, return_stdev = true, return_cov = false, return_deriv = false)
     ```
 
 ## Arguments
@@ -29,9 +29,9 @@ Predict from a `NoiseKriging` Model Object
 Argument      |Description
 ------------- |----------------
 `x`     |     Input points where the prediction must be computed.
-`stdev`     |     `Logical` . If `TRUE` the standard deviation is returned.
-`cov`     |     `Logical` . If `TRUE` the covariance matrix of the predictions is returned.
-`deriv`     |     `Logical` . If `TRUE` the derivatives of mean and sd of the predictions are returned.
+`return_stdev`     |     `Logical` . If `TRUE` the standard deviation is returned.
+`return_cov`     |     `Logical` . If `TRUE` the covariance matrix of the predictions is returned.
+`return_deriv`     |     `Logical` . If `TRUE` the derivatives of mean and sd of the predictions are returned.
 
 
 ## Details
@@ -52,16 +52,16 @@ Kriging* see [here](SecPredAndSim) for more details.
 
 ## Value
 
-A list containing the element `mean` and possibly `stdev` and
-`cov`. 
+A list containing the element `mean` and possibly `return_stdev` and
+`return_cov`. 
 
 - The expectation in ` mean` is the estimate of the vector
    $\textsf{E}[\boldsymbol{\mu}^\star + \boldsymbol{\zeta}^\star \,
    \vert \,\mathbf{y}]$ with length $n^\star$ where 
    $\boldsymbol{\mu}^\star$ and $\boldsymbol{\zeta}^\star$ are for "new"
    points and $\mathbf{y}$ corresponds to the observations. Similarly
-   the conditional standard deviation in `stdev` is a vector with
-   length $n^\star$ and the conditional covariance in `cov` is a
+   the conditional standard deviation in `return_stdev` is a vector with
+   length $n^\star$ and the conditional covariance in `return_cov` is a
    $n^\star \times n^\star$ matrix.
    
 - The (optional) derivatives are two $n^\star \times d$ matrices

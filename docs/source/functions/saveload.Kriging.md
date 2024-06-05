@@ -11,20 +11,20 @@ Save/Load a `Kriging` Model
 * Python
     ```python
     # k = Kriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$save("k.h5")
-    k2 = load("k.h5")
+    k$save("k.json")
+    k2 = load("k.json")
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 
 
@@ -43,8 +43,9 @@ y <- f(X)
 
 k <- Kriging(y, X, kernel = "matern3_2")
 k
-k$save("k.h5")
-load("k.h5")
+
+k$save("k.json")
+print(load("k.json"))
 ```
 
 ### Results

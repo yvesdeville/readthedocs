@@ -11,17 +11,17 @@ Simulation from a `NoiseKriging` model object.
 * Python
     ```python
     # k = NoiseKriging(...)
-    k.predict(nsim = 1, seed = 123, x)
+    k.simulate(nsim = 1, seed = 123, x)
     ```
 * R
     ```r
     # k = NoiseKriging(...)
-    k$predict(nsim = 1, seed = 123, x)
+    k$simulate(nsim = 1, seed = 123, x)
     ```
 * Matlab/Octave
     ```octave
     % k = NoiseKriging(...)
-    k.predict(nsim = 1, seed = 123, x)
+    k.simulate(nsim = 1, seed = 123, x)
     ```
 
 
@@ -32,6 +32,8 @@ Argument      |Description
 `nsim`     |     Number of simulations to perform.
 `seed`     |     Random seed used.
 `x`     |     Points in model input space where to simulate.
+`with_noise`     |     Set to array of values if wish to add the noise in the simulation.
+`will_update`     |     Set to TRUE if wish to use `update_simulate(...)` later.
 
 
 ## Details
@@ -43,7 +45,7 @@ This method draws paths of the stochastic process at new input
 
 ## Value
 
-a matrix with `length(x)` rows and `nsim` 
+A matrix with `nrow(x)` rows and `nsim` 
  columns containing the simulated paths at the inputs points
  given in `x` .
 

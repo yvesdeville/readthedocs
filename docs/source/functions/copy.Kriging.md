@@ -16,7 +16,7 @@ Duplicate a `Kriging` Model
 * R
     ```r
     # k = Kriging(...)
-    k2 = k$copy()
+    k2 = k$copy() # or copy(k)
     ```
 * Matlab/Octave
     ```octave

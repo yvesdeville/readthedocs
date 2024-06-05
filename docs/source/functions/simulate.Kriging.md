@@ -11,17 +11,17 @@ Simulate from a `Kriging` Model Object.
 * Python
     ```python
     # k = Kriging(...)
-    k.predict(nsim = 1, seed = 123, x)
+    k.simulate(nsim = 1, seed = 123, x)
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$predict(nsim = 1, seed = 123, x)
+    k$simulate(nsim = 1, seed = 123, x)
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.predict(nsim = 1, seed = 123, x)
+    k.simulate(nsim = 1, seed = 123, x)
     ```
 
 
@@ -32,6 +32,7 @@ Argument      |Description
 `nsim`     |     Number of simulations to perform.
 `seed`     |     Random seed used.
 `x`     |     Points in model input space where to simulate.
+`will_update`     |     Set to TRUE if wish to use `update_simulate(...)` later.
 
 
 ## Details
@@ -43,7 +44,7 @@ the input points used in the fit.
 
 ## Value
 
-A matrix with `length(x)` rows and `nsim` columns containing the
+A matrix with `nrow(x)` rows and `nsim` columns containing the
 simulated paths at the inputs points given in `x`.
 
 
