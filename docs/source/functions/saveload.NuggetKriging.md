@@ -44,13 +44,16 @@ y <- f(X) + 0.1 * rnorm(nrow(X))
 k <- NuggetKriging(y, X, kernel = "matern3_2")
 k
 
-k$save("k.json")
-print(load("k.json"))
+k$save("nuk.json")
+print(load("nuk.json"))
 ```
 
 ### Results
 ```{literalinclude} ../functions/examples/saveload.NuggetKriging.md.Rout
 :language: bash
+```
+```{literalinclude} ../functions/examples/nuk.json
+:language: json
 ```
 ![](../functions/examples/saveload.NuggetKriging.md.png)
 

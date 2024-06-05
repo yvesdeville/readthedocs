@@ -17,4 +17,6 @@ for f in `ls functions`; do
     echo "w<-dev.off()"            >> /tmp/$f.R
 
     Rscript /tmp/$f.R > functions/examples/$f.Rout
+
+    mv *.json functions/examples/.
 done

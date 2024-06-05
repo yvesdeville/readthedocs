@@ -44,13 +44,16 @@ y <- f(X) + X/10 * rnorm(nrow(X)) # add noise dep. on X
 k <- NoiseKriging(y, noise=(X/10)^2, X, kernel = "matern3_2")
 k
 
-k$save("k.json")
-print(load("k.json"))
+k$save("nok.json")
+print(load("nok.json"))
 ```
 
 ### Results
 ```{literalinclude} ../functions/examples/saveload.NoiseKriging.md.Rout
 :language: bash
+```
+```{literalinclude} ../functions/examples/nok.json
+:language: json
 ```
 ![](../functions/examples/saveload.NoiseKriging.md.png)
 
