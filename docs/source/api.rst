@@ -63,7 +63,10 @@ Prediction and simulation
 
    functions/predict.Kriging.md
    functions/simulate.Kriging.md
+   functions/update_simulate.Kriging.md
    functions/predict.NuggetKriging.md
    functions/simulate.NuggetKriging.md
+   functions/update_simulate.NuggetKriging.md
    functions/predict.NoiseKriging.md
    functions/simulate.NoiseKriging.md
+   functions/update_simulate.NoiseKriging.md
