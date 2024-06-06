@@ -67,7 +67,7 @@ arbitrarily and may also belong to the RKHS of the kernel. This will
 indeed be the case when $d=1$ and a constant trend is used with one of
 the kernels available in **libKriging**: the constant trend function
 is therefore unpenalized, which makes the Kriging smoothing and the
-Kriging prediction behaves well w.r.t. a translation of the
+Kriging prediction behave well w.r.t. a translation of the
 observations $\mathbf{y} \to \mathbf{y} + \text{Cst}$: the predicted
 values are then translated similarly. The function $h \in \mathcal{H}$
 minimizing the criterion $\texttt{PSS}$ above can be written in a
@@ -80,9 +80,9 @@ $$
 
 and Kriging indeeds find suitable vectors $\boldsymbol{\alpha}$ and
 $\boldsymbol{\beta}$. The representation of $h$ can be made unique by
-imposing orthogonality constraints, see [](SecBending).
-See {cite:t}`Wahba_Improper` for the use of an improper
-prior on the coefficients of the trend functions.
+imposing orthogonality constraints, see [](SecBending).  See
+{cite:t}`Wahba_Improper` and {cite:t}`OHagan_CurveFit` for the use of
+an improper prior on the coefficients of the trend functions.
 
 **Note** Allowing for a non-informative trend has an important
   implication in terms of implementation since *Universal Kriging*
