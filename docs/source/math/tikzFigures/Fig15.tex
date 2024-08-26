@@ -1,0 +1,223 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{aeguill}
+\usepackage{setspace}
+%\usepackage{pgfcore}
+\usepackage{pgf,pgfarrows}
+\usepackage{pgfpages}
+\usepackage{amsmath, amssymb, amsfonts}
+%% \pgfpagesuselayout{4 on 1}[a4paper, landscape]
+
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,calc,matrix,
+  decorations.pathreplacing,fit}
+\usetikzlibrary{arrows.meta}
+
+\usepackage{MnSymbol,wasysym}
+
+%% Added on 2020-04-22
+\usepackage{empheq}
+\usepackage[many]{tcolorbox}
+\tcbset{highlight math style={enhanced,
+  colframe=Orange!60,colback=orange!10,arc=4pt,boxrule=1pt,
+  }}
+
+%%=============================================================================
+%% Couleurs
+%%=============================================================================
+%
+\definecolor{MonVert}{rgb}{0.398,0.801,0.000} 
+\definecolor{MonVertF}{rgb}{0.133,0.543,0.133}
+\definecolor{MonRouge}{rgb}{0.300,0.060,0.660}
+\definecolor{MonBleuC}{rgb}{0.000,0.602,0.801} 
+\definecolor{SteelBlue2}{rgb}{0.359375,0.671875,0.9296875}
+%%\definecolor{orange}{rgb}{0.8,0.1470,0.0}
+\definecolor{Orange}{rgb}{0.8,0.1470,0.0}
+\definecolor{SteelBlue4}{rgb}{0.212, 0.392, 0.545}
+\definecolor{SteelBlue3}{rgb}{0.30859,0.578125,0.800781}
+%% \definecolor{MonBleu}{rgb}{0.212, 0.392, 0.545}
+\definecolor{MonBleu}{rgb}{0.212, 0.392, 0.945}
+\definecolor{Violet}{rgb}{0.929, 0.508, 0.929}
+
+
+%%=============================================================================
+%% Commandes pour le formatage
+%%=============================================================================
+%
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+%
+ 
+\newcommand{\HT}[1]{#1^{\text{H}}}  
+\newcommand{\LT}[1]{#1^{\text{L}}}
+\newcommand{\Hist}[1]{#1^{\text{hist}}}  
+\newcommand{\Syst}[1]{#1^{\text{syst}}}
+
+\newcommand{\fsim}{y^{\textrm{sim}}}
+\newcommand{\Dp}[1]{$\texttt{\color{MonRouge}{:}}$} 
+\newcommand{\Fonc}[1]{\texttt{\color{MonRouge}{#1}}}
+\newcommand{\New}[1]{{#1}^{\textsf{new}}}
+\newcommand{\iid}{\text{i.i.d.}}
+%% \newcommand{\Hist}[1]{{#1}^{(\texttt{H})}}
+\newcommand{\Eng}[1]{\textit{\color{MonVertF}{#1}}} 
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\V}[1]{{\color{orange}\textsf{\it #1}}}
+\newcommand{\U}[1]{{\color{Orange}{\textbf{#1}}}}
+\newcommand{\Bl}[1]{{\color{SteelBlue4}{#1}}}
+\newcommand{\Or}[1]{{\color{Orange}#1}}
+\newcommand{\Orb}[1]{{\color{Orange}\textbf{#1}}}
+\newcommand{\Ex}[1]{{\color{blue}\texttt{#1}}}
+\newcommand{\m}{\mathbf}   
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\pg}[1]{\textsf{\color{red}{#1}}}
+\newcommand{\tr}[1]{#1^\top}
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\Ms}{\textsf{m}^3/\textsf{s}}
+%
+\newcommand{\Esp}{\mathbb{E}}
+\newcommand{\Cov}{\textsf{Cov}}
+\newcommand{\Var}{\textsf{Var}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+%
+\newcommand{\Cond}[2]{#1 \left\vert\,#2\right.}
+\newcommand{\bCond}[2]{\left[#1 \left\vert\,#2\right.\right]}
+\newcommand{\pCond}[2]{\left(#1 \left\vert\,#2\right.\right)}
+%%
+\DeclareMathOperator*{\Lim}{lim}
+\newcommand{\Min}[1]{#1_{\mathsf{min}}}
+\newcommand{\Max}[1]{#1_{\mathsf{max}}}
+
+\title{Fast Update of Conditional Simulations. DRAFT}
+
+\author{the libkriging team}
+
+\date{ }
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+    \thispagestyle{empty}
+    \sf
+    \begin{tikzpicture}
+      
+      % \fill[fill=gray!40, yshift=-3mm]
+      % (2, -2) -- (0, 0) -- (4, 0.5) -- (6, -1.5);
+
+      % \fill[fill=gray!10] (2, -2) -- (0, 0) -- (4, 0.5) -- (6, -1.5);
+
+      \fill[fill=gray!40, yshift=-3mm]
+      (2 + 0.5 -2, -2 -0.5 -0.3) --        %% left bottom
+      (0 - 1 - 2, 0 +1 - 0.3) --           %% left top
+      (4- 1 + 1 ,  0.5 + 1 + 0.15) --      %% right top
+      (6 + 0.5 +1 , -1.5 - 0.5 + 0.15);    %% right bottom
+
+      %% \fill[fill=gray!10] (2, -2) -- (0, 0) -- (4, 0.5) -- (6,
+      
+      \fill[fill=gray!10]
+      (2 + 0.5 -2, -2 -0.5 -0.3) --        %% left bottom
+      (0 - 1 - 2, 0 +1 - 0.3) --           %% left top
+      (4- 1 + 1 ,  0.5 + 1 + 0.15) --      %% right top
+      (6 + 0.5 +1 , -1.5 - 0.5 + 0.15);    %% right bottom
+
+      %% \fill[fill=gray!10] (2, -2) -- (0, 0) -- (4, 0.5) -- (6, -1.5);
+      
+      \draw[thick, ->, gray!70, dotted] (0, 0) -- (4, 0.5);
+      \draw[thick, ->] (0, 0) -- (2, -2);
+      %% \draw[dotted] (0, 0) -- (2.9, 1.8); %% y
+      \draw[] (2.9, 1.8) -- (2.9, -0.6); %% y to E(y | I_2)
+      \draw[] (1.1, -1.1) -- (2.9, -0.6); %% E(y | I_1) to E(y | I_2)
+      \draw[] (2.9, 1.8) -- (1.1, -1.1);
+      \node (zero) at (0.0 - 0.2, 0.0) {$\m{0}$};
+      \node (y) at (2.9 + 0.3, 1.8) {$\m{y}$};
+      \node (Ey2) at (2.9 + 0.9, -0.6)
+      {$\Esp(\m{y}\,\vert\,\mathcal{I}_2)$};
+      \node (Ey1) at (1.1 -0.9, -1.2) {
+        $\Esp(\m{y}\,\vert\,\mathcal{I}_1)$
+      };
+      \node[rotate=-45] (I1) at (2.0 - 0.4, -2.2) {
+        \color{darkgray}$\mathcal{I}_1$
+      };
+      \node[rotate=15] (I2) at (7.5 - 0.5, -1.85 + 0.2) {
+        \color{darkgray}$\mathcal{I}_2$
+      };
+      \node at (3, -3.9) {\color{MonBleu} \small
+        The $\sigma$-fields $\mathcal{I}_1$ and $\mathcal{I}_2$ are
+        generated
+        by \textit{one} and \textit{two} r.vs respectively.
+      };
+      
+      % \fill[orange!40, fill opacity=0.4]
+      % (1.1 - 0.1,  -1.1 + 0.1) --
+      % (1.1 - 0.1 + 0.05 * 1.8, -1.1 + 0.1 + 0.05 * 2.9) --
+      % (1.1 - 0.1 + 0.05 * 1.8 + 0.1, -1.1 + 0.1 + 0.05 * 2.9 -0.1)
+      % -- (1.1,  -1.1) ;
+      
+      \draw[Orange, thick]
+      (1.1 - 0.1,  -1.1 + 0.1) --
+      (1.1 - 0.1 + 0.05 * 1.8, -1.1 + 0.1 + 0.05 * 2.9) --
+      (1.1 - 0.1 + 0.05 * 1.8 + 0.1, -1.1 + 0.1 + 0.05 * 2.9 -0.1);
+
+      %% \draw[dashed] (2.9, 1.8) -- (1.1, -1.1);
+      
+      \draw[Orange, thick]
+      (1.1 + 0.1,  -1.1 - 0.1) --
+      (1.1 + 0.1 + 0.1 * 1.8, -1.1 - 0.1 + 0.1 * 0.5) --
+      (1.1 + 0.1 + 0.1 * 1.8 - 0.1, -1.1 - 0.1 + 0.1 * 0.5 + 0.1);
+
+      \draw[Orange, thick]
+      (2.9 -0.08 * 1.8, -0.6 - 0.08 * 0.5) --
+      (2.9 -0.08 * 1.8, -0.6 - 0.08 * 0.5 + 0.15) --
+      (2.9, -0.6 + 0.15);
+    \end{tikzpicture}
+\end{document}

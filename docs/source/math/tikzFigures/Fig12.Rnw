@@ -1,0 +1,163 @@
+\documentclass{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{aeguill}
+\usepackage{setspace}
+%\usepackage{pgfcore}
+\usepackage{pgf,pgfarrows}
+\usepackage{pgfpages}
+\usepackage{amsmath, amssymb, amsfonts}
+%% \pgfpagesuselayout{4 on 1}[a4paper, landscape]
+
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,calc,matrix,
+  decorations.pathreplacing,fit}
+\usetikzlibrary{arrows.meta}
+
+\usepackage{MnSymbol,wasysym}
+
+%% Added on 2020-04-22
+\usepackage{empheq}
+\usepackage[many]{tcolorbox}
+\tcbset{highlight math style={enhanced,
+  colframe=Orange!60,colback=orange!10,arc=4pt,boxrule=1pt,
+  }}
+
+%%=============================================================================
+%% Couleurs
+%%=============================================================================
+%
+\definecolor{MonVert}{rgb}{0.398,0.801,0.000} 
+\definecolor{MonVertF}{rgb}{0.133,0.543,0.133}
+\definecolor{MonRouge}{rgb}{0.300,0.060,0.660}
+\definecolor{MonBleuC}{rgb}{0.000,0.602,0.801} 
+\definecolor{SteelBlue2}{rgb}{0.359375,0.671875,0.9296875}
+%%\definecolor{orange}{rgb}{0.8,0.1470,0.0}
+\definecolor{Orange}{rgb}{0.8,0.1470,0.0}
+\definecolor{SteelBlue4}{rgb}{0.212, 0.392, 0.545}
+\definecolor{SteelBlue3}{rgb}{0.30859,0.578125,0.800781}
+%% \definecolor{MonBleu}{rgb}{0.212, 0.392, 0.545}
+\definecolor{MonBleu}{rgb}{0.212, 0.392, 0.945}
+\definecolor{Violet}{rgb}{0.929, 0.508, 0.929}
+
+
+%%=============================================================================
+%% Commandes pour le formatage
+%%=============================================================================
+%
+\def\euro{\mbox{\raisebox{.25ex}{{\it =}}\hspace{-.5em}{\sf C}}}
+%
+ 
+\newcommand{\HT}[1]{#1^{\text{H}}}  
+\newcommand{\LT}[1]{#1^{\text{L}}}
+\newcommand{\Hist}[1]{#1^{\text{hist}}}  
+\newcommand{\Syst}[1]{#1^{\text{syst}}}
+
+\newcommand{\fsim}{y^{\textrm{sim}}}
+\newcommand{\Dp}[1]{$\texttt{\color{MonRouge}{:}}$} 
+\newcommand{\Fonc}[1]{\texttt{\color{MonRouge}{#1}}}
+\newcommand{\New}[1]{{#1}^{\textsf{new}}}
+\newcommand{\iid}{\text{i.i.d.}}
+%% \newcommand{\Hist}[1]{{#1}^{(\texttt{H})}}
+\newcommand{\Eng}[1]{\textit{\color{MonVertF}{#1}}} 
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\V}[1]{{\color{orange}\textsf{\it #1}}}
+\newcommand{\U}[1]{{\color{Orange}{\textbf{#1}}}}
+\newcommand{\Bl}[1]{{\color{SteelBlue4}{#1}}}
+\newcommand{\Or}[1]{{\color{Orange}#1}}
+\newcommand{\Orb}[1]{{\color{Orange}\textbf{#1}}}
+\newcommand{\Ex}[1]{{\color{blue}\texttt{#1}}}
+\newcommand{\m}{\mathbf}   
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\pg}[1]{\textsf{\color{red}{#1}}}
+\newcommand{\tr}[1]{#1^\top}
+\newcommand{\pkg}[1]{\textbf{#1}}
+\newcommand{\Ms}{\textsf{m}^3/\textsf{s}}
+%
+\newcommand{\Esp}{\mathbb{E}}
+\newcommand{\Cov}{\textsf{Cov}}
+\newcommand{\Var}{\textsf{Var}}
+\newcommand{\indep}{\perp \!\!\! \perp}
+%
+\newcommand{\Cond}[2]{#1 \left\vert\,#2\right.}
+\newcommand{\bCond}[2]{\left[#1 \left\vert\,#2\right.\right]}
+\newcommand{\pCond}[2]{\left(#1 \left\vert\,#2\right.\right)}
+%%
+\DeclareMathOperator*{\Lim}{lim}
+\newcommand{\Min}[1]{#1_{\mathsf{min}}}
+\newcommand{\Max}[1]{#1_{\mathsf{max}}}
+
+\title{Fast Update of Conditional Simulations. DRAFT}
+
+\author{the libkriging team}
+
+\date{ }
+
+\begin{document}
+
+    \thispagestyle{empty}
+    \sf
+    \begin{tikzpicture}
+      \node[draw=MonBleu, very thick, fill=MonBleu!20,
+      minimum width=4em, minimum height=4.5em ] at (0, 0)
+      {$\m{X}_{\texttt{o}}$};
+      
+      \node[draw=MonBleu, very thick, fill=MonBleu!20,
+      minimum width=1.6em, minimum height=4.5em ](yo) at (1.6, 0)
+      {$\m{y}_{\texttt{o}}$};
+
+      \node[draw=Orange, very thick, fill=orange!20,
+      minimum width=4em, minimum height=3em ] at (0, -1.9)
+      {$\m{X}_{\texttt{u}}$};
+
+      \node[draw=Orange, very thick, fill=orange!20,
+      minimum width=1.6em, dashed, minimum height=3em ](yu) at (1.6, -1.9)
+      {$\m{y}_{\texttt{u}}$};
+
+      \node[draw=Orange, very thick, fill=orange!20,
+      minimum width=5em, minimum height=3em] at (3.4, -1.9)
+      {$\m{Y}^{\textsf{sim}}_{\texttt{u} \vert \texttt{on}}$};
+      
+      %% The column
+      \node[draw=Orange, very thick, fill=orange!50,
+      minimum width=0.7em, minimum height=3em](yuonj) at (4.1, -1.9)
+      {};
+     
+      \node[draw=MonVert, very thick, fill=MonVert!20,
+      minimum width=4em, minimum height=4.5em ] at (0, -3.8)
+      {$\m{X}_{\texttt{n}}$};
+      
+      \node[draw=MonVert, very thick, dashed, fill=MonVert!20,
+      minimum width=1.6em, minimum height=4.5em ](yn) at (1.6, -3.8)
+      {$\m{y}_{\texttt{n}}$};
+      
+      \node[draw=MonVert, very thick, fill=MonVert!20,
+      minimum width=5em, minimum height=4.5em] at (3.4, -3.8)
+      {$\m{Y}^{\textsf{sim}}_{\texttt{n} \vert \texttt{o}}$};
+
+      %% The column #j 
+      \node[draw=MonVertF, very thick, fill=MonVert!50,
+      minimum width=0.7em, minimum height=4.5em](ynoj) at (4.1, -3.8)
+      {};
+
+      \node at (4.1, -4.87) {\footnotesize col. $j$};
+      
+      \node(Expl) at (7.5, -1.9) {\parbox{5cm}{ \small
+          \begin{spacing}{1.2}
+            Temporarily
+            ignoring $\m{y}_{\texttt{u}}$, draw
+            $\m{Y}^{\textsf{sim}}_{ \texttt{u} \vert \texttt{on}}$ where
+            $\m{Y}^{\textsf{sim}}_{ \texttt{u} \vert \texttt{on}}[ \,,
+            \,j]$ uses the simulated path
+            $\m{Y}^{\textsf{sim}}_{ \texttt{n} \vert \texttt{o}}[ \,,
+            \,j]$ as (pseudo-) realisation $\m{y}_{\texttt{n}}$.
+          \end{spacing}
+        }};
+      
+    \path[->, thick] (yo.east) edge[out = 0, in = 90] (yuonj);
+    \path[->, thick] (ynoj) edge (yuonj.south);
+    
+    \end{tikzpicture}
+\end{document}
