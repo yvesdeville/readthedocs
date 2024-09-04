@@ -3,7 +3,6 @@
 
 ## Framework
 
-
 Consider first the cases where the observations $y_i$ are from a
 stochastic process $y(\mathbf{x})$ namely the ` Kriging` and the
 `NuggetKriging` cases. Consider $n^\star$ "new" inputs
@@ -83,9 +82,9 @@ If the covariance kernel is known, the Kriging mean is given by
 
 $$
   \mathbb{E}[\mathbf{y}^\star \, \vert \,\mathbf{y} ] =
-  \underset{\text{trend}}
+  \underset{\textsf{trend}}
   {\underbrace{\mathbf{F}^\star\widehat{\boldsymbol{\beta}}}}  +
-  \underset{\text{GP}}
+  \underset{\textsf{GP}}
   {\underbrace{\mathbf{C}^\star\mathbf{C}^{-1} [\mathbf{y} - 
   \mathbf{F}\widehat{\boldsymbol{\beta}}]}},
 $$
@@ -101,11 +100,11 @@ covariance is given by
 
 $$
   \textsf{Cov}[\mathbf{y}^\star \, \vert \,\mathbf{y} ] =
-  \underset{\text{trend}}
+  \underset{\textsf{trend}}
   {\underbrace{[\mathbf{F}^\star - 
   \widehat{\mathbf{F}}^\star] \,\textsf{Cov}(\widehat{\boldsymbol{\beta}})\,
       [\mathbf{F}^\star - \widehat{\mathbf{F}}^\star]^\top}} +
-  \underset{\text{GP}}
+  \underset{\textsf{GP}}
   {\underbrace{
       \mathbf{C}^{\star\star} - 
 	  \mathbf{C}^\star \mathbf{C}^{-1} \mathbf{C}^{\star\top}}},
@@ -211,3 +210,50 @@ $\mathbf{x}^\star$ can be optionally provided. These derivatives are
 required in Bayesian Optimization. The derivatives are obtained by
 applying the chain rule to the expressions for the expectation and the
 variance.
+
+## Simulation
+
+Roughly speaking, the simulation from a Kriging model consists in
+generating a collection of random draws $\m{y}^{\star[j]}$ for $j=1$,
+$\dots$, $m$ using the (Gaussian) conditional distribution described
+above. The simulation is straightforward once the expectation and
+covariance have been computed.
+
+There are however some differences between the three models described
+in the [Kriging models](SecKrigingModels) section, namely `Kriging`,
+`NuggetKriging` and `NoiseKriging`.  All involve a *smooth process*
+component
+
+$$
+   \eta(\m{x}) := \underset{\textsf{trend}}{
+   \underbrace{\m{f}(\m{x})^\top \bs{\beta}}} + 
+  \underset{\textsf{smooth GP}}{
+   \underbrace{\zeta(\m{x})}}
+$$
+
+the process $\eta(\m{x})$ being unobserved in both the nugget and
+noise cases. The conditional simulation consists in generating random
+draws $\bs{\eta}^{\star[j]}$ $j=1$, $\dots$, $m$ from the distribution
+of $\bs{\eta}^\star:= \eta(\m{X}^\star)$ conditional on the
+observations $\m{y}$. In the `NuggetKriging` and `NoiseKriging` cases,
+it is possible to add a Gaussian noise in order to get random draws
+$\m{y}^{\star[j]}$ for "new" observations, rather than
+$\bs{\eta}^{\star[j]}$ for "new" values of the smooth process. This
+choice is made via the arguments `whith_nugget` and `with_noise` of
+the `simulate` method for the corresponding classes. In the `Kriging`
+case where no nugget or noise is used, and there is no distinction between
+$\bs{\eta}^\star$ and $\m{y}^\star$.
+
+
+**Note**. The trend component $\m{F}(\m{X}^\star) \bs{\beta}$ at some
+"new" design points $\m{X}^\star$ may be regarded as random, with an
+improper distribution. Provided that the trend matrix $\m{F} =
+\m{F}(\m{X})$ has full column rank, the distribution of the trend
+component $\m{F}(\m{X}^\star)\bs{\beta}$ conditional on $\m{y}$
+becomes proper and is moreover Gaussian. Getting random draws
+$\bs{\eta}^{\star[j]}$ from the distribution of $\bs{\eta}^\star$
+conditional on $\m{y}$ could be achieved by using random draws
+$\bs{\beta}^{\star[j]}$ and $\bs{\zeta}^{\star[j]}$ of the trend and
+GP components, using their joint distribution conditional on $\m{y}$
+which is Gaussian. Quite obvioulsy, the trend and GP components are
+not independent conditional on the observations in $\m{y}$.
