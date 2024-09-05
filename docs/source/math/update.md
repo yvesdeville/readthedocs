@@ -82,7 +82,7 @@ decomposition of the covariance matrix $\OldOld{\m{C}} :=
 \m{C}(\Old{\m{X}}, \, \Old{\m{X}})$. This step costs $O(\Old{n}^3)$
 elementary operations.
 
-The Cholesky decompostion can be performed by blocks, see
+The Cholesky decomposition can be performed by blocks, see
 {cite:t}`GolubVanloan_MatrixComputations`. The decomposition of the
 covariance matrix $\m{C}(\m{X}_{\told\tupd},\, \m{X}_{\told\tupd})$
 takes the form
@@ -205,17 +205,18 @@ this name by {cite:t}`HoffmanRibak_GaussianFields` and by
 
 In the case where an Universal Kriging model is used, one can not
 obtain non-conditional simulations because the unconditional
-distribution of $\m{y}$ is improper. However the residual Kriging can
-be used conditionally on observations $\Old{\m{y}}$ corresponding to a
-design $\Old{\m{X}}$. 
+distribution of $\m{y}$ is improper. However the residual Kriging
+method can be used conditionally on the observations $\Old{\m{y}}$
+corresponding to a design $\Old{\m{X}}$.
 
 ### Update conditional situations: FOXY
 
 Consider now the case where the simulation is conditional on
 observations $\Old{\m{y}}$ corresponding to a design $\Old{\m{X}}$. We
 can relax the no-trend assumption of the previous section and simply
-assume that the distribution conditional on $\Old{\m{y}}$ is proper
-i.e., that $\Old{\m{F}} := \m{F}(\Old{\m{X}})$ has full column rank.
+assume that the distribution of the process conditional on
+$\Old{\m{y}}$ is proper i.e., that $\Old{\m{F}} := \m{F}(\Old{\m{X}})$
+has full column rank.
 
 ![](./tikzFigures/Fig10.png)
 
@@ -249,10 +250,10 @@ C(\m{X}_{\told},\, \m{x}) \\
 $$
   
 We can then use the residual Kriging algorithm. Yet we do not in
-general know the value of the simulated paths on the $\Upd{\m{X}}$,
-hence we can not straightforwardly compute the residuals for the
-design points in $\Upd{\m{X}}$. So the FOXY algorithm proceeds in two
-steps
+general know the value of the simulated paths on the deign points in
+$\Upd{\m{X}}$, hence we can not straightforwardly compute the
+residuals for the design points in $\Upd{\m{X}}$. So the FOXY
+algorithm proceeds in two steps
 
 - **Step 1** Extend the simulated paths to the design points in
   $\Upd{\m{X}}$
@@ -280,10 +281,10 @@ weights.
 
 Remind that the `simulate` method for the class `"NoiseKriging"` draws
 either *non-noisy* or *noisy* paths from the Kriging model. Referring
-to the notations used in the last sub-section of the [Prediction and
+to the notations used at the end of the [Prediction and
 simulation](predictSimulate) section, the simulated non-noisy paths
-embed a *smooth process* part $\eta(\m{x})$ which is the sum of
-the linear trend and the GP components
+embed a *smooth process* part $\eta(\m{x})$ which is the sum of the
+linear trend and the GP components
 
 $$
    \underset{\textsf{smooth process}}{
@@ -300,11 +301,11 @@ The simulation essentially generates random draws $\bs{\eta}^{\star[j]}$
 for the value of the smooth process $\eta(\New{\m{x}})$ at the new
 design points given $\New{\m{X}}$.
 
-When the `simulate` method is used, the random draws returned in a
-matrix $\m{Y}_{\tnew \vert \told}^\tsim$. These can be either
-non-noisy or noisy with the provided noise variance $\New{\sigma}^2$.
-By using the `will_update` option, the simulations and the
-corresponding parameters can be attached to the Kriging model
+When the `simulate` method is used, the random draws are returned as
+the columns of a matrix $\m{Y}_{\tnew \vert \told}^\tsim$. These can
+be either non-noisy or noisy with the provided noise variance
+$\New{\sigma}^2$.  By using the `will_update` option, the simulations
+and the corresponding parameters can be attached to the Kriging model
 object. If so, the `update_simulate` method can be used later. The
 "update" observations then provided in $\m{y}_{\tupd}$ are assumed to
 be noisy with a noise $\sigma_{\tupd}^2$ which can be zero.

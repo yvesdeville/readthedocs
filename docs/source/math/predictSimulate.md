@@ -228,7 +228,7 @@ $$
    \eta(\m{x}) := \underset{\textsf{trend}}{
    \underbrace{\m{f}(\m{x})^\top \bs{\beta}}} + 
   \underset{\textsf{smooth GP}}{
-   \underbrace{\zeta(\m{x})}}
+   \underbrace{\zeta(\m{x})}},
 $$
 
 the process $\eta(\m{x})$ being unobserved in both the nugget and
@@ -239,9 +239,9 @@ observations $\m{y}$. In the `NuggetKriging` and `NoiseKriging` cases,
 it is possible to add a Gaussian noise in order to get random draws
 $\m{y}^{\star[j]}$ for "new" observations, rather than
 $\bs{\eta}^{\star[j]}$ for "new" values of the smooth process. This
-choice is made via the arguments `whith_nugget` and `with_noise` of
-the `simulate` method for the corresponding classes. In the `Kriging`
-case where no nugget or noise is used, and there is no distinction between
+choice is made via the arguments `with_nugget` and `with_noise` of
+the `simulate` method for the corresponding class. In the `Kriging`
+case where no nugget or noise is used there is no distinction between
 $\bs{\eta}^\star$ and $\m{y}^\star$.
 
 
@@ -255,5 +255,5 @@ $\bs{\eta}^{\star[j]}$ from the distribution of $\bs{\eta}^\star$
 conditional on $\m{y}$ could be achieved by using random draws
 $\bs{\beta}^{\star[j]}$ and $\bs{\zeta}^{\star[j]}$ of the trend and
 GP components, using their joint distribution conditional on $\m{y}$
-which is Gaussian. Quite obvioulsy, the trend and GP components are
+which is Gaussian. Quite obviously, the trend and GP components are
 not independent conditional on the observations in $\m{y}$.
