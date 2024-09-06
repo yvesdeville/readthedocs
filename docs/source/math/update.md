@@ -29,7 +29,7 @@ is $\Old{\m{X}} \leftrightarrow \m{X}$ and $\New{\m{X}}
 \leftrightarrow \m{X}^\star$.
 
 
-The two following problems are considered
+The two following problems are considered here
 
 - **Update a Kriging model object** Suppose that a Kriging model has
    been fitted by using the "old" design $\Old{\m{X}}$ and the "old"
@@ -47,12 +47,13 @@ The two following problems are considered
    model has been fitted by using the "old" design $\Old{\m{X}}$ and
    the "old" observations $\Old{\m{y}}$. Using this model, conditional
    simulations have been computed for the "new" design points in
-   $\New{\m{X}}$. This means that $m$ simulated paths have been
-   computed on $\New{\m{X}}$. Later on, the "update" vector of
-   observations $\Upd{\m{y}}$ corresponding to the "update" design
-   $\Upd{\m{X}}$ becomes available. We then want to update the
-   $m$ simulations so that they become conditional on $\Old{\m{y}}$ *and
-   on* $\Upd{\m{y}}$.
+   $\New{\m{X}}$. This means that $m$ simulated paths
+   $\m{y}^{[j]}_{\tnew\vert\told}$ have been computed for $j=1$,
+   $\dots$, $m$, corresponding to the design $\New{\m{X}}$. Later on,
+   the "update" vector of observations $\Upd{\m{y}}$ corresponding to
+   the "update" design $\Upd{\m{X}}$ becomes available. We then want
+   to update the $m$ simulations so that they become conditional on
+   $\Old{\m{y}}$ *and on* $\Upd{\m{y}}$.
 
 Of course we want each of the two *update* steps to be faster than the
 computation "from scratch" of the Kriging model or of the simulations
@@ -72,7 +73,7 @@ clear. Hints are given on the noisy case at the very end of this
 section.
 
 
-
+(SecKrigingUpdate)=
 ## Updating a fitted Kriging model object
 
 
@@ -116,7 +117,7 @@ When $\Upd{n}$ is small relative to $\Old{n}$, the update is faster
 than a fit using the observations $\m{y}_{\told\tupd}$. This is
 especially true when $\Upd{n} = O(1)$ while $\Old{n}$ is large.
 
-
+(SecSimulateUpdate)=
 ## Updating simulations
 
 ### The Kriging weights
@@ -240,8 +241,9 @@ This kernel expresses as
 $$
 \begin{aligned}
 \widetilde{C}(\m{x}, \, \m{x}')
-	&= C(\m{x},\, \m{x}') -C(\m{x}, \,\m{X}_{\told}) \m{C}_{\told,\told}^{-1}\, 
-C(\m{X}_{\told},\, \m{x}) \\
+	&= C(\m{x},\, \m{x}') - 
+	\m{C}(\m{x}, \,\m{X}_{\told}) \m{C}_{\told,\told}^{-1}\, 
+    \m{C}(\m{X}_{\told},\, \m{x}) \\
       &+ \left[\m{f}(\m{x}) 
 - \widehat{\m{f}}(\m{x}) \right]^\top \Cov(\widehat{\bs{\beta}})
 \left[\m{f}(\m{x}) 
@@ -274,8 +276,11 @@ the observations $\Upd{\m{y}}$ are used only in step 2.
 
 ![](./tikzFigures/Fig13.png)
 
-{cite:t}`ChevalierEtAl_Update` give nice update formulas for the Kriging
-weights.
+In some case the update design corresponds to a subset of the new
+design. If so, the **step 1** is no longer needed.
+
+**Note**. {cite:t}`ChevalierEtAl_Update` give update formulas for the
+Kriging weights.
 
 ## The noisy case
 

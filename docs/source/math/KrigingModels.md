@@ -31,7 +31,7 @@ The models involve the following elements or components.
   $\delta(\mathbf{x}, \,\mathbf{x}') := 1_{\{\mathbf{x} = \mathbf{x}'\}}$.
   
 * **Noise** A collection of independent random variables
-  $\varepsilon_i$ with variances $\tau^2_i$.
+  $\varepsilon_i$ with mean zero and variances $\tau^2_i$.
   
 
 Note that the words *nugget* and *noise* are sometimes

@@ -14,7 +14,7 @@ posterior mode in a Bayesian analysis. Provided that suitable priors
 are used, it can be shown that the estimated ranges will be both
 finite and positive: $0 < \widehat{\theta}_k < \infty$.
 
-**Note**  In **libKriging** the Bayesian approach will be used only to provide
+**Note**.  In **libKriging** the Bayesian approach will be used only to provide
   alternatives to the ML estimation of the range or correlation
   parameters.  The Bayesian inference on these parameters will not be
   achieved. Rather than the profile likelihood, a so-called
