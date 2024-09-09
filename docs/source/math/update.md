@@ -22,11 +22,11 @@ All the design matrices have the same number of columns which is the
 number of inputs $d$. The letters $\told$, $\tnew$ and $\tupd$ are not
 symbols, hence are not italicized.
 
-**Note**. The notations of this section differ from those of the [Predict
-and simulate](SecPredAndSim) section where no "update" design and
-observations are used. The correspondence for "old" and "new" objects
-is $\Old{\m{X}} \leftrightarrow \m{X}$ and $\New{\m{X}}
-\leftrightarrow \m{X}^\star$.
+**Note**. The notations of this section differ from those of the
+[Predict and simulate](SecPredAndSim) section where no "update" design
+and no "update" observations are used. The correspondence for "old"
+and "new" objects is $\Old{\m{X}} \leftrightarrow \m{X}$ and
+$\New{\m{X}} \leftrightarrow \m{X}^\star$.
 
 
 The two following problems are considered here
@@ -295,20 +295,22 @@ $$
    \underset{\textsf{smooth process}}{
 	   \underbrace{{\eta}(\m{x})}
 	}
-	= \underset{\textsf{trend}}{
+	:= \underset{\textsf{trend}}{
 		\underbrace{\m{f}(\m{x})^\top \bs{\beta}}
 	} + 
     \underset{\textsf{GP}}{
         \underbrace{\zeta(\m{x})}
     }.
 $$
-The simulation essentially generates random draws $\bs{\eta}^{\star[j]}$
-for the value of the smooth process $\eta(\New{\m{x}})$ at the new
-design points given $\New{\m{X}}$.
+
+The simulation essentially generates random draws
+$\New{\bs{\eta}}^{[j]}$ for the vector of the $\New{n}$ values of the
+smooth process $\eta(\m{x})$ at the new design points given in
+$\New{\m{X}}$.
 
 When the `simulate` method is used, the random draws are returned as
 the columns of a matrix $\m{Y}_{\tnew \vert \told}^\tsim$. These can
-be either non-noisy or noisy with the provided noise variance
+be either: non-noisy, or noisy with the provided noise variance
 $\New{\sigma}^2$.  By using the `will_update` option, the simulations
 and the corresponding parameters can be attached to the Kriging model
 object. If so, the `update_simulate` method can be used later. The
@@ -316,6 +318,6 @@ object. If so, the `update_simulate` method can be used later. The
 be noisy with a noise $\sigma_{\tupd}^2$ which can be zero.
 
 Note that when $\sigma_{\tupd}^2$ is very large, the "update"
-observations provide only little information about the process part
+observations provide only little information about the process part,
 hence the predictions and simulations from the updated model should be
 close to those arising from the original model.
