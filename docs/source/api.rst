@@ -3,10 +3,10 @@ API
 
 Following API doc supports:
 
-* __Python__ wrapper
-* __R__ wrapper
-* __Octave__ wrapper
-* __Matlab__ wrapper
+* Python wrapper
+* R wrapper
+* Octave wrapper
+* Matlab wrapper
 
 .. include:: pyrm-syntax.md
    :parser: myst_parser.sphinx_
@@ -21,12 +21,15 @@ Contructors
    functions/Kriging.md
    functions/update.Kriging.md
    functions/copy.Kriging.md
+   functions/saveload.Kriging.md
    functions/NuggetKriging.md
    functions/update.NuggetKriging.md
    functions/copy.NuggetKriging.md
+   functions/saveload.NuggetKriging.md
    functions/NoiseKriging.md
    functions/update.NoiseKriging.md
    functions/copy.NoiseKriging.md
+   functions/saveload.NoiseKriging.md
 
 Fit objective
 ---------
@@ -39,6 +42,7 @@ Fit objective
    functions/logLikelihoodFun.Kriging.md
    functions/leaveOneOut.Kriging.md
    functions/leaveOneOutFun.Kriging.md
+   functions/leaveOneOutVec.Kriging.md
    functions/logMargPost.Kriging.md
    functions/logMargPostFun.Kriging.md
    functions/fit.NuggetKriging.md

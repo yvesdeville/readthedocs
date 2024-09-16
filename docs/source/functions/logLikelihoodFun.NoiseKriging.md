@@ -13,17 +13,17 @@ GP Variance $\sigma^2$
 * Python
     ```python
     # k = NoiseKriging(...)
-    k.logLikelihoodFun(theta_sigma2)
+    k.logLikelihoodFun(theta_sigma2, grad)
     ```
 * R
     ```r
     # k = NoiseKriging(...)
-    k$logLikelihoodFun(theta_sigma2)
+    k$logLikelihoodFun(theta_sigma2, grad)
     ```
 * Matlab/Octave
     ```octave
     % k = NoiseKriging(...)
-    k.logLikelihoodFun(theta_sigma2)
+    k.logLikelihoodFun(theta_sigma2, grad)
     ```
 
 
