@@ -47,9 +47,9 @@ Argument      |Description
 `y`     |     Numeric vector of response values.
 `noise`     |     Numeric vector of response variances.
 `X`     |     Numeric matrix of input design.
-`regmodel`     |     Universal NoiseKriging linear trend.
+`regmodel`     |     Universal NoiseKriging linear trend: `"constant"`, `"linear"`, `"interactive"`, `"quadratic"`.
 `normalize`     |     Logical. If `TRUE` both the input matrix `X` and the response `y` in normalized to take values in the interval $[0, 1]$ .
-`optim`     |     Character giving the Optimization method used to fit hyper-parameters. Possible values are: `"BFGS"` and `"none"` , the later simply keeping the values given in `parameters` . The method `"BFGS"` uses the gradient of the objective.
+`optim`     |     Character giving the Optimization method used to fit hyper-parameters. Possible values are: `"BFGS"` and `"none"` , the later simply keeping the values given in `parameters` . The method `"BFGS"` uses the gradient of the objective (note that `"BGFS10"` means 10 multi-start of BFGS).
 `objective`     |     Character giving the objective function to optimize. Possible values are: `"LL"` for the Log-Likelihood.
 `parameters`     |     Initial values for the hyper-parameters. When provided this must be named list with elements `"sigma2"`  and `"theta"` containing the initial value(s) for the variance and for the range parameters. If `theta` is a matrix with more than one row, each row is used as a starting point for optimization.
 `kernel`     |     Character defining the covariance model: `"exp"` , `"gauss"` , `"matern3_2"` , `"matern5_2"` .

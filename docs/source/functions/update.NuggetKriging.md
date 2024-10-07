@@ -11,17 +11,17 @@ Update a `NuggetKriging` model object with new points
 * Python
     ```python
     # k = NuggetKriging(...)
-    k.update(newy, newX)
+    k.update(y_u, X_u)
     ```
 * R
     ```r
     # k = NuggetKriging(...)
-    k$update(newy, newX)
+    k$update(y_u, X_u)
     ```
 * Matlab/Octave
     ```octave
     % k = NuggetKriging(...)
-    k.update(newy, newX)
+    k.update(y_u, X_u)
     ```
 
 
@@ -29,8 +29,8 @@ Update a `NuggetKriging` model object with new points
 
 Argument      |Description
 ------------- |----------------
-`newy`     |     Numeric vector of new responses (output).
-`newX`     |     Numeric matrix of new input points.
+`y_u`     |     Numeric vector of new responses (output).
+`X_u`     |     Numeric matrix of new input points.
 
 
 ## Examples
@@ -50,14 +50,14 @@ p <- k$predict(x)
 lines(x, p$mean, col = "blue")
 polygon(c(x, rev(x)), c(p$mean - 2 * p$stdev, rev(p$mean + 2 * p$stdev)), border = NA, col = rgb(0, 0, 1, 0.2))
 
-newX <- as.matrix(runif(3))
-newy <- f(newX) + 0.1 * rnorm(nrow(newX))
-points(newX, newy, col = "red")
+X_u <- as.matrix(runif(3))
+y_u <- f(X_u) + 0.1 * rnorm(nrow(X_u))
+points(X_u, y_u, col = "red")
 
 ## change the content of the object 'k'
-k$update(newy, newX)
+k$update(y_u, X_u)
 
-x <- sort(c(X,newX,seq(from = 0, to = 1, length.out = 101))) # include design points to see interpolation
+x <- sort(c(X,X_u,seq(from = 0, to = 1, length.out = 101))) # include design points to see interpolation
 p2 <- k$predict(x)
 lines(x, p2$mean, col = "red")
 polygon(c(x, rev(x)), c(p2$mean - 2 * p2$stdev, rev(p2$mean + 2 * p2$stdev)), border = NA, col = rgb(1, 0, 0, 0.2))

@@ -11,20 +11,20 @@ Save/Load a `NoiseKriging` Model
 * Python
     ```python
     # k = NoiseKriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 * R
     ```r
     # k = NoiseKriging(...)
-    k$save("k.h5")
-    k2 = load("k.h5")
+    k$save("k.json")
+    k2 = load("k.json")
     ```
 * Matlab/Octave
     ```octave
     % k = NoiseKriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 
 
@@ -43,13 +43,17 @@ y <- f(X) + X/10 * rnorm(nrow(X)) # add noise dep. on X
 
 k <- NoiseKriging(y, noise=(X/10)^2, X, kernel = "matern3_2")
 k
-k$save("k.h5")
-load("k.h5")
+
+k$save("nok.json")
+print(load("nok.json"))
 ```
 
 ### Results
 ```{literalinclude} ../functions/examples/saveload.NoiseKriging.md.Rout
 :language: bash
+```
+```{literalinclude} ../functions/examples/nok.json
+:language: json
 ```
 ![](../functions/examples/saveload.NoiseKriging.md.png)
 

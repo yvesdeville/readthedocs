@@ -11,20 +11,20 @@ Save/Load a `NuggetKriging` Model
 * Python
     ```python
     # k = NuggetKriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 * R
     ```r
     # k = NuggetKriging(...)
-    k$save("k.h5")
-    k2 = load("k.h5")
+    k$save("k.json")
+    k2 = load("k.json")
     ```
 * Matlab/Octave
     ```octave
     % k = NuggetKriging(...)
-    k.save("k.h5")
-    k2 = load("k.h5")
+    k.save("k.json")
+    k2 = load("k.json")
     ```
 
 
@@ -43,13 +43,17 @@ y <- f(X) + 0.1 * rnorm(nrow(X))
 
 k <- NuggetKriging(y, X, kernel = "matern3_2")
 k
-k$save("k.h5")
-load("k.h5")
+
+k$save("nuk.json")
+print(load("nuk.json"))
 ```
 
 ### Results
 ```{literalinclude} ../functions/examples/saveload.NuggetKriging.md.Rout
 :language: bash
+```
+```{literalinclude} ../functions/examples/nuk.json
+:language: json
 ```
 ![](../functions/examples/saveload.NuggetKriging.md.png)
 

@@ -14,17 +14,17 @@ of Variances $\texttt{GP} / (\texttt{GP} + \texttt{nugget})$
 * Python
     ```python
     # k = NuggetKriging(...)
-    k.logLikelihoodFun(theta_alpha, grad = FALSE)
+    k.logLikelihoodFun(theta_alpha, return_grad = False)
     ```
 * R
     ```r
     # k = NuggetKriging(...)
-    k$logLikelihoodFun(theta_alpha, grad = FALSE)
+    k$logLikelihoodFun(theta_alpha, return_grad = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = NuggetKriging(...)
-    k.logLikelihoodFun(theta_alpha, grad = FALSE)
+    k.logLikelihoodFun(theta_alpha, return_grad = false)
     ```
 
 
@@ -33,7 +33,7 @@ of Variances $\texttt{GP} / (\texttt{GP} + \texttt{nugget})$
 Argument      |Description
 ------------- |----------------
 `theta_alpha`     |     A numeric vector of (positive) range parameters and variance over nugget + variance at which the log-likelihood will be evaluated.
-`grad`     |     Logical. Should the function return the gradient?
+`return_grad`     |     Logical. Should the function return the gradient?
 
 ## Details
 

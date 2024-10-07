@@ -12,17 +12,17 @@ Compute the Leave-One-Out (LOO) Sum of Squares of Errors
 * Python
     ```python
     # k = Kriging(...)
-    k.leaveOneOutFun(theta, grad = FALSE)
+    k.leaveOneOutFun(theta, return_grad = False)
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$leaveOneOutFun(theta, grad = FALSE)
+    k$leaveOneOutFun(theta, return_grad = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.leaveOneOutFun(theta, grad = FALSE)
+    k.leaveOneOutFun(theta, return_grad = false)
     ```
 
 
@@ -31,7 +31,7 @@ Compute the Leave-One-Out (LOO) Sum of Squares of Errors
 Argument      |Description
 ------------- |----------------
 `theta`     |     A numeric vector of range parameters at which the LOO sum of squares will be evaluated.
-`grad`     |     Logical. Should the gradient (w.r.t. `theta` ) be returned?
+`return_grad`     |     Logical. Should the gradient (w.r.t. `theta` ) be returned?
 
 
 ## Details
