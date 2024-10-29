@@ -15,4 +15,4 @@ Models description
    math/likelihood.md
    math/leaveOneOut.md
    math/Bayesian.md   
-   math/Adet.md
+   math/update.rst
