@@ -83,7 +83,7 @@ latex_macros = r"""
     \def \Upd          #1{#1_{\texttt{u}}}
     \def \tnew         #1{\texttt{n}}
     \def \told         #1{\texttt{o}}
-    \def \tsim         #1{\texttt{s}}
+    \def \tsim         #1{\texttt{sim}}
     \def \tupd         #1{\texttt{u}}
     \def \NewOld       #1{#1_{\texttt{n},\texttt{o}}}
     \def \NewNew       #1{#1_{\texttt{n},\texttt{n}}}

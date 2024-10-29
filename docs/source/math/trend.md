@@ -10,19 +10,19 @@ The possible trend functions in **libKriging** are as follow, by increasing
 level of complexity.
 
 * The **constant trend** involves $p = 1$ coefficient and
-  $\mathbf{f}(\mathbf{x})^\top\boldsymbol{\beta} = \beta$.
+  $\m{f}(\m{x})^\top\bs{\beta} = \beta$.
   
 * The **linear trend** involves $p = d +1$ coefficients
 
   $$
-    \mathbf{f}(\mathbf{x})^\top \boldsymbol{\beta} = \beta_0 + \sum_{i=1}^d \beta_i \, x_i.
+    \m{f}(\m{x})^\top \bs{\beta} = \beta_0 + \sum_{i=1}^d \beta_i \, x_i.
   $$
 
 * The **interactive trend** involves $1 + d + d (d-1) /2$
   coefficients
 
   $$
-    \mathbf{f}(\mathbf{x})^\top \boldsymbol{\beta} = \beta_0  +
+    \m{f}(\m{x})^\top \bs{\beta} = \beta_0  +
     \sum_{i=1}^d \sum_{j=1}^{i-1} \beta_{ji} \, x_j x_i. 
   $$
   
@@ -30,7 +30,7 @@ level of complexity.
   coefficients
   
   $$
-    \mathbf{f}(\mathbf{x})^\top \boldsymbol{\beta} = \beta_0  +
+    \m{f}(\m{x})^\top \bs{\beta} = \beta_0  +
     \sum_{i=1}^d \sum_{j=1}^i \beta_{ji} \, x_j x_i. 
   $$
 
@@ -45,16 +45,16 @@ of complexity
 $$
 \begin{aligned}
   \textsf{constant} \qquad
-  & \mathbf{f}(\mathbf{x})^\top
+  & \m{f}(\m{x})^\top
   = [1] \\
   \textsf{linear} \qquad
-  & \mathbf{f}(\mathbf{x})^\top
+  & \m{f}(\m{x})^\top
   = [1, \: x_1, \: x_2,\: \:x_3] \\
   \textsf{interaction} \qquad
-  & \mathbf{f}(\mathbf{x})^\top
+  & \m{f}(\m{x})^\top
   = [1, \: x_1, \: x_2,\: x_1x_2, \:x_3,\: x_1x_3,\: x_2x_3] \\
   \textsf{quadratic} \qquad
-  & \mathbf{f}(\mathbf{x})^\top
+  & \m{f}(\m{x})^\top
   = [1, \: x_1, \: x_1^2, \: x_2,\: x_1x_2, \: x_2^2, \: x_3,\: x_1x_3,\: x_2x_3, \:x_3^2] \\
 \end{aligned}
 $$

@@ -4,65 +4,65 @@
 ## Generalized Least Squares
 
 Using $n$ given observations $y_i$, we can estimate the trend at the
-inputs $\mathbf{x}_i$. For that aim we must find an estimate
-$\widehat{\boldsymbol{\beta}}$ of the unknown vector
-$\boldsymbol{\beta}$.  When no nugget or noise is used, the GP part
-comes as the difference $\widehat{\boldsymbol{\zeta}} = \mathbf{y} -
-\mathbf{F}\widehat{\boldsymbol{\beta}}$. When instead a nugget or a
+inputs $\m{x}_i$. For that aim we must find an estimate
+$\widehat{\bs{\beta}}$ of the unknown vector
+$\bs{\beta}$.  When no nugget or noise is used, the GP part
+comes as the difference $\widehat{\bs{\zeta}} = \m{y} -
+\m{F}\widehat{\bs{\beta}}$. When instead a nugget or a
 noise is present a further step is needed to separate the smooth GP
-part from the nugget or noise in $\mathbf{y} -
-\mathbf{F}\widehat{\boldsymbol{\beta}}$.
+part from the nugget or noise in $\m{y} -
+\m{F}\widehat{\bs{\beta}}$.
 
 If the covariance parameters are known, the estimate
-$\widehat{\boldsymbol{\beta}}$ can be obtained by using General Least
+$\widehat{\bs{\beta}}$ can be obtained by using General Least
 Squares (GLS); this estimate is also the Maximum Likelihood estimate.
 The computations related to GLS can rely on the Cholesky and the QR
 decompositions of matrices as now detailed.
 
 ### The `"Kriging"` case
 
-In the `"Kriging"` case, we have $\mathbf{C} = \sigma^2 \mathbf{R}$ where
-$\mathbf{R}$ is the correlation matrix depending on $\boldsymbol{\theta}$. If the
-correlation matrix $\mathbf{R}$ is known, then the ML estimate of
-$\boldsymbol{\beta}$ and its covariance are given by
+In the `"Kriging"` case, we have $\m{C} = \sigma^2 \m{R}$ where
+$\m{R}$ is the correlation matrix depending on $\bs{\theta}$. If the
+correlation matrix $\m{R}$ is known, then the ML estimate of
+$\bs{\beta}$ and its covariance are given by
 
 $$
-  \widehat{\boldsymbol{\beta}} = \left[\mathbf{F}^\top \mathbf{R}^{-1} 
-  \mathbf{F}\right]^{-1}
-  \mathbf{F}^\top \mathbf{R}^{-1}\mathbf{y}, \qquad
-  \textsf{Cov}(\widehat{\boldsymbol{\beta}}) = \sigma^2 [\mathbf{F}^\top 
-  \mathbf{R}^{-1}\mathbf{F}]^{-1}.
+  \widehat{\bs{\beta}} = \left[\m{F}^\top \m{R}^{-1} 
+  \m{F}\right]^{-1}
+  \m{F}^\top \m{R}^{-1}\m{y}, \qquad
+  \textsf{Cov}(\widehat{\bs{\beta}}) = \sigma^2 [\m{F}^\top 
+  \m{R}^{-1}\m{F}]^{-1}.
 $$
 
 Moreover the ML estimate $\widehat{\sigma}^2$ is available as well.
 
 In practice we can use the Cholesky decomposition
-$\mathbf{R} = \mathbf{L}\mathbf{L}^\top$ where $\mathbf{L}$ is a $n \times n$ lower
+$\m{R} = \m{L}\m{L}^\top$ where $\m{L}$ is a $n \times n$ lower
 triangular matrix with positive diagonal elements.  By
-left-multiplying the relation $\mathbf{y} = \mathbf{F}\boldsymbol{\beta} + \boldsymbol{\zeta}$
-by $\mathbf{L}^{-1}$, we get
+left-multiplying the relation $\m{y} = \m{F}\bs{\beta} + \bs{\zeta}$
+by $\m{L}^{-1}$, we get
 
 $$
-  \mathbf{y}^\dagger = \mathbf{F}^\dagger\boldsymbol{\beta} + 
-  \boldsymbol{\zeta}^\dagger
+  \m{y}^\dagger = \m{F}^\dagger\bs{\beta} + 
+  \bs{\zeta}^\dagger
 $$
 
 where the "dagged" symbols indicate a left multiplication by
-$\mathbf{L}^{-1}$ e.g.,
-$\mathbf{y}^\dagger=\mathbf{L}^{-1}\mathbf{y}$.  We get a standard
+$\m{L}^{-1}$ e.g.,
+$\m{y}^\dagger=\m{L}^{-1}\m{y}$.  We get a standard
 linear regression with i.i.d. Gaussian errors
-$\boldsymbol{\zeta}_i^\dagger$ having zero mean and variance
-$\sigma^2$. So the ML estimates $\widehat{\boldsymbol{\beta}}$ and
+$\bs{\zeta}_i^\dagger$ having zero mean and variance
+$\sigma^2$. So the ML estimates $\widehat{\bs{\beta}}$ and
 $\widehat{\sigma}^2$ come by Ordinary Least Squares. Using
-$\widehat{\boldsymbol{\zeta}} = \mathbf{y} -
-\mathbf{F}\widehat{\boldsymbol{\beta}}$ and
-$\boldsymbol{\zeta}^\dagger :=
-\mathbf{L}^{-1}\widehat{\boldsymbol{\zeta}}$ we have
+$\widehat{\bs{\zeta}} = \m{y} -
+\m{F}\widehat{\bs{\beta}}$ and
+$\bs{\zeta}^\dagger :=
+\m{L}^{-1}\widehat{\bs{\zeta}}$ we have
 
 $$
   \widehat{\sigma}^2_{\texttt{ML}} = \frac{1}{n} \,S^2, \quad\text{with}\quad
-  S^2 := \widehat{\boldsymbol{\zeta}}^{\dagger\top}\widehat{\boldsymbol{\zeta}}^\dagger
-  = \widehat{\boldsymbol{\zeta}}^\top\mathbf{R}^{-1}\widehat{\boldsymbol{\zeta}}.
+  S^2 := \widehat{\bs{\zeta}}^{\dagger\top}\widehat{\bs{\zeta}}^\dagger
+  = \widehat{\bs{\zeta}}^\top\m{R}^{-1}\widehat{\bs{\zeta}}.
 $$
 
 Note that $\widehat{\sigma}^2_{\texttt{ML}}$ is a biased estimate of
@@ -71,45 +71,45 @@ $n-p$ instead of $n$ as the denominator: this is the so-called
 *Restricted Maximum Likelihood* (REML) estimate.
 
 The computations rely on the so-called "thin" or "economical" QR
-decomposition of the transformed trend matrix $\mathbf{F}^\dagger$
+decomposition of the transformed trend matrix $\m{F}^\dagger$
 
 $$ 
-  \mathbf{F}^\dagger = \mathbf{Q}_{\mathbf{F}^\dagger} \mathbf{R}_{\mathbf{F}^\dagger} 
+  \m{F}^\dagger = \m{Q}_{\m{F}^\dagger} \m{R}_{\m{F}^\dagger} 
 $$
 
-where $\mathbf{Q}_{\mathbf{F}^\dagger}$ is a $n \times p$ orthogonal matrix and
-$\mathbf{R}_{\mathbf{F}^\dagger}$ is a $p \times
+where $\m{Q}_{\m{F}^\dagger}$ is a $n \times p$ orthogonal matrix and
+$\m{R}_{\m{F}^\dagger}$ is a $p \times
 p$ upper triangular matrix. The orthogonality means that 
-$\mathbf{Q}_{\mathbf{F}^{\dagger}}^\top\mathbf{Q}_{\mathbf{F}^\dagger}= \mathbf{I}_p$.
-The estimate $\widehat{\boldsymbol{\beta}}$ 
+$\m{Q}_{\m{F}^{\dagger}}^\top\m{Q}_{\m{F}^\dagger}= \m{I}_p$.
+The estimate $\widehat{\bs{\beta}}$ 
 comes by solving the
-triangular system $\mathbf{R}_{\mathbf{F}^\dagger}\boldsymbol{\beta} =
-\mathbf{Q}_{\mathbf{F}^\dagger}^\top \mathbf{y}^\dagger$, and the
+triangular system $\m{R}_{\m{F}^\dagger}\bs{\beta} =
+\m{Q}_{\m{F}^\dagger}^\top \m{y}^\dagger$, and the
 covariance of the estimate is
-$\textsf{Cov}(\widehat{\boldsymbol{\beta}}) =
-\mathbf{R}_{\mathbf{F}^\dagger}^{-1}
-\mathbf{R}_{\mathbf{F}^\dagger}^{-\top}$
+$\textsf{Cov}(\widehat{\bs{\beta}}) =
+\m{R}_{\m{F}^\dagger}^{-1}
+\m{R}_{\m{F}^\dagger}^{-\top}$
 
 Following a popular linear regression trick, one can further use the
-QR decomposition of the matrix $\mathbf{F}^\dagger_+$ obtained by adding a
-new column $\mathbf{y}^\dagger$ to $\mathbf{F}^\dagger$ 
+QR decomposition of the matrix $\m{F}^\dagger_+$ obtained by adding a
+new column $\m{y}^\dagger$ to $\m{F}^\dagger$ 
 
 $$
-\mathbf{F}^\dagger_+ := \left[ \mathbf{F}^\dagger \, \vert \, \mathbf{y}^\dagger \right]
-= \mathbf{Q}_{\mathbf{F}^\dagger_+}\mathbf{R}_{\mathbf{F}^\dagger_+}.  
+\m{F}^\dagger_+ := \left[ \m{F}^\dagger \, \vert \, \m{y}^\dagger \right]
+= \m{Q}_{\m{F}^\dagger_+}\m{R}_{\m{F}^\dagger_+}.  
 $$
 
-Then the $p+1$ column of $\mathbf{Q}_{\mathbf{F}^\dagger_+}$ contains
-the vector of residuals $\widehat{\boldsymbol{\zeta}}^\dagger =
-\mathbf{y}^\dagger - \mathbf{F}^\dagger \widehat{\boldsymbol{\beta}}$
+Then the $p+1$ column of $\m{Q}_{\m{F}^\dagger_+}$ contains
+the vector of residuals $\widehat{\bs{\zeta}}^\dagger =
+\m{y}^\dagger - \m{F}^\dagger \widehat{\bs{\beta}}$
 in its first $p$ elements and the residual sum of squares is given by
-the square of the element $R_{\mathbf{F}^\dagger_+}[p + 1, p +1]$. See
+the square of the element $R_{\m{F}^\dagger_+}[p + 1, p +1]$. See
 {cite:t}`Lange_Numerical`.
 
 
 ### `"NuggetKriging"` and `"NoiseKriging"`
 
-When a nugget or noise term is used, the estimate of $\boldsymbol{\beta}$ can
+When a nugget or noise term is used, the estimate of $\bs{\beta}$ can
 be obtained as above provided that the covariance matrix is that of
 the non-trend component hence includes the nugget or noise variance in
 its diagonal. In the `NuggetKriging` case the GLS will provide an
@@ -121,50 +121,50 @@ estimate of $\sigma^2$ is found.
 (SecBending)= 
 ## The Bending Energy Matrix
 
-Since $\widehat{\boldsymbol{\beta}}$ is a linear function of
-$\mathbf{y}$ we have
+Since $\widehat{\bs{\beta}}$ is a linear function of
+$\m{y}$ we have
 
 $$
-  [\mathbf{y} - \mathbf{F}\widehat{\boldsymbol{\beta}}]^\top \mathbf{C}^{-1}
-  [\mathbf{y} - \mathbf{F}\widehat{\boldsymbol{\beta}}] =
-  \mathbf{y}^\top \mathbf{B} \mathbf{y}
+  [\m{y} - \m{F}\widehat{\bs{\beta}}]^\top \m{C}^{-1}
+  [\m{y} - \m{F}\widehat{\bs{\beta}}] =
+  \m{y}^\top \m{B} \m{y}
 $$
 
-where the $n \times n$ matrix $\mathbf{B}$ called the *Bending Energy
+where the $n \times n$ matrix $\m{B}$ called the *Bending Energy
   Matrix* (BEM) is given by
   
 $$
-  \mathbf{B} = \mathbf{C}^{-1} - \mathbf{C}^{-1}\mathbf{F} \left[\mathbf{F}^\top \mathbf{C}^{-1} \mathbf{F} \right]^{-1}
-  \mathbf{F}^\top\mathbf{C}^{-1}.
+  \m{B} = \m{C}^{-1} - \m{C}^{-1}\m{F} \left[\m{F}^\top \m{C}^{-1} \m{F} \right]^{-1}
+  \m{F}^\top\m{C}^{-1}.
 $$
 
-The $n \times n$ matrix $\mathbf{B}$ is such that
-$\mathbf{B}\mathbf{F} = \mathbf{0}$ which means that the columns of
-$\mathbf{F}$ are eigenvectors of $\mathbf{B}$ with eigenvalue $0$. If
-$\mathbf{C}$ is positive definite and $\mathbf{F}$ has full column rank
-as assumed, then $\mathbf{B}$ has rank $n- p$.
+The $n \times n$ matrix $\m{B}$ is such that
+$\m{B}\m{F} = \m{0}$ which means that the columns of
+$\m{F}$ are eigenvectors of $\m{B}$ with eigenvalue $0$. If
+$\m{C}$ is positive definite and $\m{F}$ has full column rank
+as assumed, then $\m{B}$ has rank $n- p$.
 
 In the special case where no trend is used i.e., $p=0$ the bending
-energy matrix can consistently be defined as $\mathbf{B} := \mathbf{C}^{-1}$,
-the trend matrix $\mathbf{F}$ then being a matrix with zero columns and the
-vector $\boldsymbol{\beta}$ being of length zero.
+energy matrix can consistently be defined as $\m{B} := \m{C}^{-1}$,
+the trend matrix $\m{F}$ then being a matrix with zero columns and the
+vector $\bs{\beta}$ being of length zero.
 
 The BEM matrix is closely related to smoothing since the trend
-and GP component of $\mathbf{y}$ are given by
+and GP component of $\m{y}$ are given by
 
 $$
-  \mathbf{y} =
+  \m{y} =
   \underset{\text{trend}}
-  {\underbrace{\widehat{\boldsymbol{\mu}}}} +
+  {\underbrace{\widehat{\bs{\mu}}}} +
   \underset{\text{GP}}
-  {\underbrace{\widehat{\boldsymbol{\eta}}}}
-  = [\mathbf{I}_n - \mathbf{C}\mathbf{B}] \, \mathbf{y} + \mathbf{C}\mathbf{B} \, \mathbf{y}.
+  {\underbrace{\widehat{\bs{\eta}}}}
+  = [\m{I}_n - \m{C}\m{B}] \, \m{y} + \m{C}\m{B} \, \m{y}.
 $$
 
-The matrix $\mathbf{I}_n - \mathbf{C}\mathbf{B}$ is the matrix of the orthogonal
-projection on the linear space spanned by the columns of $\mathbf{F}$ in
+The matrix $\m{I}_n - \m{C}\m{B}$ is the matrix of the orthogonal
+projection on the linear space spanned by the columns of $\m{F}$ in
 $\mathbb{R}^n$ equipped with the inner product
-$\langle\mathbf{z},\,\mathbf{z}'\rangle_{\mathbf{C}^{-1}} := \mathbf{z}^\top \mathbf{C}^{-1}\mathbf{z}'$.
+$\langle\m{z},\,\m{z}'\rangle_{\m{C}^{-1}} := \m{z}^\top \m{C}^{-1}\m{z}'$.
 
 **Note**   The BEM does not depend on the specific basis used to define the
   linear space of trend functions. It also depends on the kernel only
@@ -173,96 +173,96 @@ $\langle\mathbf{z},\,\mathbf{z}'\rangle_{\mathbf{C}^{-1}} := \mathbf{z}^\top \ma
   provides useful insights into the model used such as the so-called
   *Principal Kriging Functions*
 
-The BEM $\mathbf{B}$ can be related to the matrices $\mathbf{C}$ and $\mathbf{F}$ by
+The BEM $\m{B}$ can be related to the matrices $\m{C}$ and $\m{F}$ by
 a block inversion
 
 $$
   \begin{bmatrix}
-    \mathbf{C} & \mathbf{F}\\
-    \mathbf{F}^\top & \mathbf{0}
+    \m{C} & \m{F}\\
+    \m{F}^\top & \m{0}
   \end{bmatrix}^{-1}
   =
   \begin{bmatrix}
-    \mathbf{B} & \mathbf{U}\\
-    \mathbf{U}^\top & \mathbf{V}
+    \m{B} & \m{U}\\
+    \m{U}^\top & \m{V}
   \end{bmatrix}
   \qquad \text{with }
   \left\{
     \begin{aligned}
-      \mathbf{V} &:= - [\mathbf{F}^\top\mathbf{C}^{-1}\mathbf{F}]^{-1}\\
-      \mathbf{U} &:= - \mathbf{C}^{-1}\mathbf{F}\mathbf{V}
+      \m{V} &:= - [\m{F}^\top\m{C}^{-1}\m{F}]^{-1}\\
+      \m{U} &:= - \m{C}^{-1}\m{F}\m{V}
     \end{aligned}
   \right.
 $$
 
-where the inverse exists provided that $\mathbf{F}$ has full column rank,
+where the inverse exists provided that $\m{F}$ has full column rank,
 the kernel being assumed to be definite positive.
 
 The relation can be derived by using the so-called *kernel shift*
-functions $\mathbf{x} \mapsto C(\mathbf{x}, \, \mathbf{x}_i)$ to
-represent the GP component of $y(\mathbf{x})$ in the Kriging mean
+functions $\m{x} \mapsto C(\m{x}, \, \m{x}_i)$ to
+represent the GP component of $y(\m{x})$ in the Kriging mean
 function
 
 $$
-h(\mathbf{x}) =
+h(\m{x}) =
 \underset{\text{GP}}
-{\underbrace{\sum_{i=1}^n \alpha_i \, C(\mathbf{x}_i, \, \mathbf{x})}}
+{\underbrace{\sum_{i=1}^n \alpha_i \, C(\m{x}_i, \, \m{x})}}
 +
 \underset{\text{trend}}
-{\underbrace{\sum_{k=1}^p \beta_k f_k(\mathbf{x})}}.
+{\underbrace{\sum_{k=1}^p \beta_k f_k(\m{x})}}.
 $$
 
 In the case where the model has no nugget or noise, using the $n$
 observations $y_i$ we can find the $n + p$ unknown coefficients
 $\alpha_i$ and $\beta_k$ by imposing the orthogonality constraints
-$\mathbf{F}^\top\boldsymbol{\alpha} = \mathbf{0}_p$, leading to the
+$\m{F}^\top\bs{\alpha} = \m{0}_p$, leading to the
 linear system
 
 $$
   \begin{bmatrix}
-    \mathbf{C} & \mathbf{F}\\
-    \mathbf{F}^\top & \mathbf{0}
+    \m{C} & \m{F}\\
+    \m{F}^\top & \m{0}
   \end{bmatrix}
   \begin{bmatrix}
-    \boldsymbol{\alpha}\\
-    \boldsymbol{\beta}
+    \bs{\alpha}\\
+    \bs{\beta}
   \end{bmatrix} = 
   \begin{bmatrix}
-    \mathbf{y}\\
-    \mathbf{0}
+    \m{y}\\
+    \m{0}
   \end{bmatrix},
 $$
 
 see {cite:t}`MardiaEtAl_KrigingSplines`.
 
 It turns out that the trend part of the solution is then identical
-to the GLS estimate $\widehat{\boldsymbol{\beta}}$.
+to the GLS estimate $\widehat{\bs{\beta}}$.
 
-If $n^\star$ "new" inputs $\mathbf{x}^\star_j$ are given in a matrix
-$\mathbf{X}^\star$, then with $\mathbf{C}^\star :=
-\mathbf{C}(\mathbf{X}^\star, \, \mathbf{X})$ and $\mathbf{F}^\star
-:=\mathbf{F}(\mathbf{X}^\star)$ the prediction writes in blocks form
+If $n^\star$ "new" inputs $\m{x}^\star_j$ are given in a matrix
+$\m{X}^\star$, then with $\m{C}^\star :=
+\m{C}(\m{X}^\star, \, \m{X})$ and $\m{F}^\star
+:=\m{F}(\m{X}^\star)$ the prediction writes in blocks form
 as
 
 $$
-  \widehat{\mathbf{y}}^\star =
+  \widehat{\m{y}}^\star =
   \begin{bmatrix}
-    \mathbf{C}^\star & \mathbf{F}^\star
+    \m{C}^\star & \m{F}^\star
   \end{bmatrix}
   \begin{bmatrix}
-    \widehat{\boldsymbol{\alpha}} \\
-    \widehat{\boldsymbol{\beta}}
+    \widehat{\bs{\alpha}} \\
+    \widehat{\bs{\beta}}
   \end{bmatrix} =
   \begin{bmatrix}
-    \mathbf{C}^\star & \mathbf{F}^\star
+    \m{C}^\star & \m{F}^\star
   \end{bmatrix}
   \begin{bmatrix}
-    \mathbf{B} & \mathbf{U}\\
-    \mathbf{U}^\top & \mathbf{V}
+    \m{B} & \m{U}\\
+    \m{U}^\top & \m{V}
   \end{bmatrix}
   \begin{bmatrix}
-    \mathbf{y} \\
-    \mathbf{0}
+    \m{y} \\
+    \m{0}
   \end{bmatrix}.
 $$
 
