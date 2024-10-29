@@ -30,7 +30,7 @@ given Vector $\boldsymbol{\theta}$ of Correlation Ranges
 Argument      |Description
 ------------- |----------------
 `theta`     |     A numeric vector of (positive) range parameters at which the profile log-likelihood will be evaluated.
-`grad`     |     Logical. Should the function return the gradient?
+`return_grad`     |     Logical. Should the function return the gradient?
 `hess`     |     Logical. Should the function return Hessian?
 
 

@@ -46,9 +46,9 @@ Argument      |Description
 ------------- |----------------
 `y`     |     Numeric vector of response values.
 `X`     |     Numeric matrix of input design.
-`regmodel`     |     Universal Kriging linear trend.
+`regmodel`     |     Universal Kriging linear trend: `"constant"`, `"linear"`, `"interactive"`, `"quadratic"`.
 `normalize`     |     Logical. If `TRUE` both the input matrix `X` and the response `y` in normalized to take values in the interval $[0, 1]$ .
-`optim`     |     Character giving the Optimization method used to fit hyper-parameters. Possible values are: `"BFGS"` , `"Newton"` and `"none"` , the later simply keeping the values given in `parameters` . The method `"BFGS"` uses the gradient of the objective. The method `"Newton"` uses both the gradient and the Hessian of the objective.
+`optim`     |     Character giving the Optimization method used to fit hyper-parameters. Possible values are: `"BFGS"` , `"Newton"` and `"none"` , the later simply keeping the values given in `parameters` . The method `"BFGS"` uses the gradient of the objective (note that `"BGFS10"` means 10 multi-start of BFGS). The method `"Newton"` uses both the gradient and the Hessian of the objective.
 `objective`     |     Character giving the objective function to optimize. Possible values are: `"LL"` for the Log-Likelihood, `"LOO"` for the Leave-One-Out sum of squares and `"LMP"` for the Log-Marginal Posterior.
 `parameters`     |     Initial values for the hyper-parameters. When provided this must be named list with elements `"sigma2"`  and `"theta"` containing the initial value(s) for the variance and for the range parameters. If `theta` is a matrix with more than one row, each row is used as a starting point for optimization.
 

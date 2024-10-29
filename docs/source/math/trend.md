@@ -1,6 +1,11 @@
 (SecTrend)=
 # Trend functions in Kriging models
 
+Essai 
+$$
+\Z
+$$
+
 The possible trend functions in **libKriging** are as follow, by increasing
 level of complexity.
 

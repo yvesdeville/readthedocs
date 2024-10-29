@@ -13,17 +13,17 @@ $\texttt{GP} / (\texttt{GP}+ \texttt{nugget})$
 * Python
     ```python
     # k = Kriging(...)
-    k.logMargPostFun(theta_alpha, grad = FALSE)
+    k.logMargPostFun(theta_alpha, return_grad = False)
     ```
 * R
     ```r
     # k = Kriging(...)
-    k$logMargPostFun(theta_alpha, grad = FALSE)
+    k$logMargPostFun(theta_alpha, return_grad = FALSE)
     ```
 * Matlab/Octave
     ```octave
     % k = Kriging(...)
-    k.logMargPostFun(theta_alpha, grad = FALSE)
+    k.logMargPostFun(theta_alpha, return_grad = false)
     ```
 
 
@@ -32,7 +32,7 @@ $\texttt{GP} / (\texttt{GP}+ \texttt{nugget})$
 Argument      |Description
 ------------- |----------------
 `theta_alpha`     |     Numeric vector of correlation range and variance over nugget + variance parameters at which the function is to be evaluated.
-`grad`     |     Logical. Should the function return the gradient (w.r.t `theta_alpha`)?
+`return_grad`     |     Logical. Should the function return the gradient (w.r.t `theta_alpha`)?
 
 ## Details 
 

@@ -32,7 +32,7 @@ GP Variance $\sigma^2$
 Argument      |Description
 ------------- |----------------
 `theta_sigma2` |  A numeric vector of (positive) range parameters and variance at which the log-likelihood will be evaluated.
-`grad`     |     Logical. Should the function return the gradient?
+`return_grad`     |     Logical. Should the function return the gradient?
 
 
 ## Details

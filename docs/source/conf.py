@@ -6,8 +6,8 @@ project = 'libKriging'
 copyright = 'Apache License'
 author = 'libKriging team'
 
-release = '0.8'
-version = '0.8.0'
+release = '0.9'
+version = '0.9.0'
 
 # -- General configuration
 
@@ -51,7 +51,7 @@ myst_enable_extensions = [
     "smartquotes",
     "strikethrough",
     "substitution",
-    "tasklist",
+    "tasklist"
 ]
 
 # -- added by Yves
