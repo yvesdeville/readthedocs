@@ -1,0 +1,406 @@
+---
+title: An R Markdown document converted from "libK_inv.ipynb"
+output: html_document
+---
+
+
+```{r}
+# Installation des packages nécessaires, en utilisant packagemanager.posit pour accélérer
+options(repos=list(CRAN='https://packagemanager.posit.co/cran/__linux__/jammy/latest/'))
+install.packages('rlibkriging')
+install.packages('DiceView')
+```
+
+```{r}
+# Latest DiceView (waiting for CRAN sync)
+remotes::install_github('IRSN/DiceView')
+```
+
+```{r}
+#knitr::opts_chunk$set(echo = TRUE)
+
+# chargement des librairies
+library(rlibkriging)
+library(DiceView)
+
+# setup default plots aesthetics
+par(oma = c(0,0,0,0))
+par(mar = c(3, 3, 1, 1))
+par(cex.lab=0.5, cex.axis=0.5, cex.main=0.5)
+par(bg = "white")
+
+options(digits=5)
+```
+
+# Objectif
+
+On cherche à trouver la zone de dépassement de la valeur $t=0.8$ pour la fonction
+$$f: x \rightarrow     1 - (sin(12  x) / (1 + x) + 2 cos(7 x)  x^5 + 0.7) / 2$$
+
+Soit, identifier
+$$I := \{x \in D_X : f(x) > t \}$$
+
+```{r}
+f <- function(x)
+    1 - (sin(12 * x) / (1 + x) + 2 * cos(7 * x) * x^5 + 0.7) / 2
+
+plot(f)
+
+abline(h = 0.8, col='red', lty=2)
+# On cherche à identifier I:
+I = sort(optims(c(0.3,0.4), function(x) (f(x) - 0.8)^2, method="L-BFGS-B", lower=0, upper=1)$pars)
+polygon(c(I,rev(I)), c(0,0,1.1,1.1), col=rgb(1,0,0,.2), border=NA)
+```
+
+# Métamodèle GP
+
+Sur un plan d'expérience inital réduit $(X_0,Y_0)$, on construit un processus gaussien dont le prédicteur est :
+$$\xi_{X_0,Y_0}: x \rightarrow \xi(x) \sim \mathcal N(m_{X_0,Y_0}(x),k_{X_0,Y_0}(x))$$
+
+Ce méta-modèle est insuffisant en l'état pour atteindre l'objectif :
+
+```{r}
+# plan d'exp initial
+X0 = matrix(c(.2,.4,.6,.8),ncol=1)
+Y0 = f(X0)
+
+sectionview(f, dim=1, col='black', Xlim=c(0,1),ylim=c(-.2,1.2))
+points(X0, Y0)
+
+GP = function(X,Y)
+  Kriging(matrix(Y), matrix(X), kernel="gauss", optim="none", parameters=list(theta=c(.15),sigma2=1))
+
+sectionview(GP(X0,Y0), conf_level=0.9, col='blue', add=TRUE)
+
+# Objectif
+abline(h=0.8, col='red',lty=3)
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+```
+
+# Dépassement de seuil y > 0.8 du métamodèle
+
+Soit $X,Y$ notre plan d'expériences courant (pour le moment initial).
+
+Choix du critère "local" d'intérêt : MSE de classification wrt. 0.8
+
+On calcule le critère "global" $J$ en utilisant les prédictions du GP courant $\xi$ et en intégrant numériquement le critère sur $D_X$ :
+
+$$J_{X,Y} := \int_{x \in D_X} P[\xi_{X,Y}(x)>t] (1-P[\xi_{X,Y}(x)>t]) $$
+
+```{r}
+x = seq(0, 1,,101)
+
+X = X0
+Y = Y0
+
+# predictions du métamodèle
+y = GP(X,Y)$predict(x)
+
+# proba de dépassement de 0.8
+P = 1-pnorm(0.8,y$mean,y$stdev)
+
+par(mfrow=c(3,1))
+
+sectionview(GP(X,Y), Xlim=c(0,1),ylim=c(-.2,1.2), conf_lev=.9)
+# Objectif
+abline(h=0.8, col='red',lty=3)
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+plot(x,P, type='l',col='violet', main="Proba de dépassement de 0.8")
+abline(h=0.5)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+plot(x,P*(1-P), type='l',col='violet', main="Erreur (quad.) de classification wrt. 0.8")
+polygon(c(0,x,1), c(0,P*(1-P),0), col=rgb(1,0.5,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+# J: intégrale sur X de l'erreur quad. de classif.
+text(x=.5,y=.1,labels=paste0("J = ",sum(P * (1-P))/length(P)))
+```
+
+
+
+Une alternative consiste en un calcul empirique utilisant les simulations du GP (et non pas les prédictions)
+
+```{r}
+# simulations du métamodèle
+S = GP(X,Y)$simulate(nsim=100,seed=123, x)
+
+# proba (empirique) de dépassement de 0.8
+P_S = rowSums(S>0.8)/ncol(S)
+
+par(mfrow=c(3,1))
+
+sectionview(GP(X,Y), Xlim=c(0,1),ylim=c(-.2,1.2), conf_lev=.9, conf_fading = 0.1)
+for (i in 1:ncol(S))
+    lines(x,S[,i], col=rgb(0,0,1,.21),lty=1)
+# Objectif
+abline(h=0.8, col='red',lty=3)
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+plot(x,P_S, type='l',col='violet', main="Proba de dépassement de 0.8")
+lines(x,P, lty=2,col='violet')
+abline(h=0.5)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+plot(x,P_S*(1-P_S), type='l',col='violet', main="Erreur (quad.) de classification wrt. 0.8")
+lines(x,P*(1-P), lty=2,col='violet')
+polygon(c(0,x,1), c(0,P_S*(1-P_S),0), col=rgb(1,0.5,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+# J: intégrale sur X de l'erreur quad. de classif.
+text(x=.5,y=.1,labels=paste0("Ĵ = ",sum(P_S * (1-P_S))/length(P_S)))
+```
+
+# Recherche d'un nouveau point de design "informatif"
+
+Critère d'intérêt "intégrale erreur (quad.) de classification" :
+$$J(X,Y) = \int_{x \in D_X} P[\xi_{X,Y}(x)>t] (1-P[\xi_{X,Y}(x)>t])$$
+
+```{r}
+J = function(X,Y) {
+    y = GP(X,Y)$predict(x)
+    P = 1 - pnorm(0.8,y$mean,y$stdev)
+    return( mean( P*(1-P) ) )
+}
+J(X,Y)
+```
+
+---
+#Démarche "SUR"
+Nous cherchons à placer un point de design qui ajouté au plan d'expériences,
+$$({X \cup x_{next}},{Y \cup y_{next}}),$$
+va minimiser notre critère global :
+$$J({X \cup x_{next}},{Y \cup y_{next}})$$
+En supposant que les valeurs $y_{next}$ sont des réalisations de $\xi_{X,Y}(x_{next})$, le GP courant, nous introduisons l'amélioration espérée correspondante :
+
+$$J_{next}(x_{next}) = E_{\xi(x_{next})} \big[J({X \cup x_{next}},{Y \cup \xi(x_{next})}\big].$$
+
+---
+
+Soit,
+
+$$J_{next}(x_{next}) = \int_{y_{next} \sim \xi(x_{next})} \int_{x \in D_X} P[\xi_{X\cup x_{next},Y\cup y_{next}}(x)>t] (1-P[\xi_{X\cup x_{next},Y\cup y_{next}}(x)>t])$$
+
+# Evaluation du gain de $J$ en ajoutant $x_{next}$ supplémentaire au design
+
+
+
+```{r}
+#split.screen(figs = c(2,1))
+
+#screen(1, new=TRUE)
+plot(f, xlim=c(0.2,0.8), ylim=c(-0.3,1.3))
+sectionview(GP(X,Y), conf_lev=.9, conf_fading = 0.5, Xlim=c(0,1), ylim=c(-0.3,1.3), add=TRUE)
+# Objectif
+abline(h=0.8, col='red',lty=3)
+#polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+#screen(2, new=TRUE)
+.x=seq(0,1,,1001)
+p.x = pnorm(0.8, GP(X,Y)$predict(.x)$mean, GP(X,Y)$predict(.x)$stdev)
+#lines(.x,p.x*(1-p.x), type='l',col='blue')
+polygon(c(0,.x,1), c(0,p.x*(1-p.x),0)-0.3, col=rgb(0,0,1,.2), border=NA)
+text(x=.5,y=.1,col="blue",labels=paste0("J = ",J(X,Y)))
+
+# choix arbitraire du point de design suivant
+xnext = x[31] # =0.3
+#screen(1, new=FALSE)
+abline(v=xnext,col='red')
+
+# calcul du SUR avec ce point
+Ynext = GP(X,Y)$predict(xnext)
+
+Jnext = array(NA,5)
+for (i in 1:length(Jnext)) { # on échantillone ynext selon la loi de prédiction en xnext (normale)
+    q = i/(length(Jnext)+1)
+    ynext_i = qnorm(q, Ynext$mean, Ynext$stdev)
+    jnext_i = J(c(X,xnext),c(Y,ynext_i))
+    Jnext[i] = jnext_i
+
+    GPnext_i = GP(c(X,xnext),c(Y,ynext_i))
+    #screen(1, new=FALSE)
+    sectionview(GPnext_i, col="violet", conf_lev=.9, conf_fading = 0.5, Xlim=c(0,1), add=TRUE)
+
+    #screen(2, new=FALSE)
+    p.x = pnorm(0.8, GPnext_i$predict(.x)$mean, GPnext_i$predict(.x)$stdev)
+    #lines(.x,p.x*(1-p.x),col='violet')
+    polygon(c(0,.x,1), c(0,p.x*(1-p.x),0)-0.3, col=rgb(1,0.5,1,.2), border="violet")
+}
+text(x=xnext,y=.1,col="violet",labels=paste0("Jnext(",xnext,") = \n",mean(Jnext)))
+```
+
+# Calcul de Jnext
+
+```{r}
+# calcul "exact" du SUR avec ce point
+Ynext = GP(X,Y)$predict(xnext)
+Jnext = integrate(Vectorize(function(q) # on échantillonne selon la loi (normale) de Kn en xnext
+    J(c(X,xnext),c(Y, qnorm(q, Ynext$mean, Ynext$stdev)))),
+    0 +1e-3, 1 -1e-3)$value
+print(paste0("Jnext(",xnext,")  = ",Jnext))
+
+# ... ou version approx. par mesh régulier des quantiles :
+Jnext = function(xnext, X, Y) {
+    if (any(abs(xnext-X)<1e-5)) { return(J(X,Y)) }
+    Ynext = GP(X,Y)$predict(xnext)
+    Jnext = array(NA,100)
+    for (i in 1:length(Jnext)) {
+        q = i/(length(Jnext)+1)
+        ynext_i = qnorm(q, Ynext$mean, Ynext$stdev)
+        Jnext[i] = J(c(X,xnext),c(Y,ynext_i))
+    }
+    return(mean(Jnext))
+}
+print(paste0("Jnext(",xnext,") ~= ",Jnext(xnext,X,Y)))
+```
+
+# Critère local vs. global
+
+On peut comparer les deux approches "locale" $P (1-P)$ et "globale" $J_{next}$ de choix du prochain point de design :
+
+```{r}
+par(mfrow=c(3,1))
+
+sectionview(GP(X,Y), Xlim=c(0,1),ylim=c(-.2,1.2), conf_lev=.9)
+# Objectif
+abline(h=0.8, col='red',lty=3)
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+
+# predictions du métamodèle
+y = GP(X,Y)$predict(x)
+
+# proba de dépassement de 0.8
+P = 1-pnorm(0.8,y$mean,y$stdev)
+
+plot(x,P*(1-P), type='l',col='violet', main="Erreur (quad.) de classification wrt. 0.8")
+polygon(c(0,x,1), c(0,P*(1-P),0), col=rgb(1,0.5,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+# meilleurs points (selon P(1-P)):
+P_opts = optims(seq(0,1,,11), function(x) {
+  y = GP(X,Y)$predict(x);
+  p=pnorm(0.8,y$mean,y$stdev);
+  -p*(1-p) }, method="L-BFGS-B", lower=0, upper=1)
+P_opts = P_opts$pars[P_opts$values < 0]
+abline(v=P_opts,col='violet',lty=3)
+
+DJ_x = J(X,Y) - Vectorize(function(.x)Jnext(.x,X,Y))(x)
+plot(x,DJ_x, type='l',col='purple', main="SUR P(1-P) wrt. 0.8")
+polygon(c(0,x,1), c(0,DJ_x,0), col=rgb(0.5,0,1,.2), border=NA)
+abline(v=P_opts,col='violet',lty=3)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+```
+
+# Utilisation des simulations pour évaluer le critère Jnext
+
+Fonction générique de calcul de $\hat J(X,Y)$ à partir de simulations du processus:
+
+```{r}
+J_hat = function(X,Y, nsim=100) {
+    #y = GP(X,Y)$predict(x)
+    S = GP(X,Y)$simulate(nsim=nsim,seed=123, x)
+    P = rowSums(S > 0.8)/ncol(S)
+    j = mean( P*(1-P) )
+    attributes(j) <- list("sd" = sd(P*(1-P))/sqrt(nsim))
+    return(j)
+}
+t0 = Sys.time()
+print(paste0("Calcul avec les prédictions: J = ",J(X0,Y0)))
+print(Sys.time()-t0)
+
+t0 = Sys.time()
+Jhat = J_hat(X0,Y0, nsim=10000)
+print(paste0("Calcul avec les simulations: Ĵ = ",Jhat, " +/- ",attributes(Jhat)$sd))
+print(Sys.time()-t0)
+```
+
+On constate que l'utilisation des simulations (pour une précision élevée) est plus __lente__ que l'utilisation des prédictions.
+
+Utilisons l'approche par simulation pour la fonction générique de calcul de $\hat J_{next}$ :
+
+```{r}
+Jnext_hat = function(xnext, X,Y, nsim=100) {
+    if (any(abs(xnext-X)<1e-5)) { return(J_hat(X,Y)) }
+    Ynext = GP(X,Y)$predict(xnext)
+    Jnext = array(NA,100)
+    for (i in 1:length(Jnext)) { # on échantillone ynext selon la loi de prédiction en xnext (normale)
+        q = i/(length(Jnext)+1)
+        ynext_i = qnorm(q, Ynext$mean, Ynext$stdev)
+        Jnext[i] = J_hat(c(X,xnext),c(Y,ynext_i), nsim=nsim)
+    }
+    return(mean(Jnext))
+}
+t0 = Sys.time()
+print(paste0("Calcul avec les prédictions: Jnext(",xnext,") = ",Jnext(xnext,X0,Y0)))
+print(Sys.time()-t0)
+
+t0 = Sys.time()
+print(paste0("Calcul avec les simulations: Ĵnext(",xnext,") = ",Jnext_hat(xnext,X0,Y0, nsim=100)))
+print(Sys.time()-t0)
+```
+
+On optimise le calcul de $\hat J_{next}$ en utilisant les updates de simulations du GP :
+
+```{r}
+Jnext_hat_fast = function(xnext, X,Y, nsim=100) {
+    if (any(abs(xnext-X)<1e-5)) { return(J_hat(X,Y)) }
+    Ynext = GP(X,Y)$predict(xnext)
+    gp = GP(X,Y)
+    S = gp$simulate(nsim=nsim,seed=123, c(xnext,x), will_update=TRUE) # needed for later 'update_simulate'
+    Jnext = array(NA,100)
+    for (i in 1:length(Jnext)) { # on échantillone ynext selon la loi de prédiction en xnext (normale)
+        q = i/(length(Jnext)+1)
+        ynext_i = qnorm(q, Ynext$mean, Ynext$stdev)
+################################################################################
+        Snext_i = gp$update_simulate(ynext_i, xnext)
+################################################################################
+        P = rowSums(Snext_i>0.8)/ncol(Snext_i)
+        Jnext[i] = mean( P*(1-P) )
+    }
+    return(mean(Jnext))
+}
+t0 = Sys.time()
+print(paste0("Calcul avec les prédictions: Jnext(",xnext,") = ",Jnext(xnext,X0,Y0)))
+print(Sys.time()-t0)
+
+t0 = Sys.time()
+print(paste0("Calcul avec les simulations: Ĵnext(",xnext,") = ",Jnext_hat(xnext,X0,Y0, nsim=100)))
+print(Sys.time()-t0)
+
+t0 = Sys.time()
+print(paste0("Calcul avec les simulations updatées: Ĵnextup(",xnext,") = ",Jnext_hat_fast(xnext,X0,Y0, nsim=100)))
+print(Sys.time()-t0)
+```
+
+On peut finalement comparer ces différentes versions du critère $J_{next}$ :
+
+```{r}
+par(mfrow=c(3,1))
+
+DJ_x = J(X,Y) - Vectorize(function(.x)Jnext(.x,X,Y))(x)
+plot(x,DJ_x, type='l',col='purple', main="SUR P(1-P) wrt. 0.8 (predict)")
+polygon(c(0,x,1), c(0,DJ_x,0), col=rgb(0.5,0,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+DJ_hat_x = J_hat(X,Y) - Vectorize(function(.x)Jnext_hat(.x,X,Y,nsim=100))(x)
+plot(x,DJ_hat_x, type='l',col='purple', main="SUR P(1-P) wrt. 0.8 (simulate)")
+polygon(c(0,x,1), c(0,DJ_hat_x,0), col=rgb(0.5,0,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+
+DJ_hat_fast_x = J_hat(X,Y) - Vectorize(function(.x)Jnext_hat_fast(.x,X,Y,nsim=100))(x)
+plot(x,DJ_hat_fast_x, type='l',col='purple', main="SUR P(1-P) wrt. 0.8 (update simulate)")
+polygon(c(0,x,1), c(0,DJ_hat_fast_x,0), col=rgb(0.5,0,1,.2), border=NA)
+# Objectif
+polygon(c(I,rev(I)), c(-0.3,-0.3,1.3,1.3), col=rgb(1,0,0,.2), border=NA)
+```
+
